@@ -18,7 +18,7 @@ describe Board do
   end
 
   describe "#assign_square_names" do
-    it "assigns a string the the name attribute" do
+    it "assigns a string to the name attribute" do
       name_list = new_board.gameboard.map(&:name)
       expect(name_list).to all(be_kind_of(String))
     end
@@ -32,6 +32,25 @@ describe Board do
 
     it "assigns h1 to element 63" do
       expect(new_board.gameboard[63].name).to eq("h1")
+    end
+  end
+
+  describe "#assign_coordinates" do
+    it "assigns an array to the coorinates attribute" do
+      coordinates_list = new_board.gameboard.map(&:coordinates)
+      expect(coordinates_list).to all(be_kind_of(Array))
+    end
+
+    it "assigns [0, 0] to element 0" do
+      expect(new_board.gameboard[0].coordinates).to eq([0, 0])
+    end
+
+    it "assigns [0, 7] to element 7" do
+      expect(new_board.gameboard[7].coordinates).to eq([0, 7])
+    end
+
+    it "assigns [7, 7] to element 63" do
+      expect(new_board.gameboard[63].coordinates).to eq([7, 7])
     end
   end
 

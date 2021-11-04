@@ -4,7 +4,7 @@
 # sliced into an 8 x 8 matrix when needed. Each element of the array will be
 # a Struct that maintains information about each square.
 class Board
-  Square = Struct.new(:name, :grid_coordinates, :occupied)
+  Square = Struct.new(:name, :coordinates, :occupied)
 
   attr_reader :gameboard
 
@@ -15,6 +15,7 @@ class Board
 
   def assign_properties
     assign_square_names
+    assign_square_coordinates
   end
 
   def assign_square_names
@@ -31,5 +32,18 @@ class Board
          .each_slice(8).to_a.transpose
          .flatten
   end
+
+  def assign_square_coordinates
+    create_square_coordinates.each_with_index do |coord, index|
+      gameboard[index].coordinates = coord
+    end
+  end
+
+  def create_square_coordinates
+    row_numbers = (0..7).to_a
+    col_numbers = (0..7).to_a
+    row_numbers.product(col_numbers)
+  end
+
 
 end
