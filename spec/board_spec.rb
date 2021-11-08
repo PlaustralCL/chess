@@ -80,7 +80,7 @@ describe Board do
 
   describe "#clear_path?" do
     white_rook = described_class.new("8/8/1R1p2p1/8/8/8/1P6/8")
-    # start_square = white_rook.gameboard[17]
+    g2_rook = described_class.new("8/8/8/8/6P1/8/6R1/8")
 
     context "rook moving right when the path is not clear" do
       start_square = white_rook.gameboard[17]
@@ -99,7 +99,6 @@ describe Board do
     end
 
     context "rook moving left and the path is clear" do
-      g2_rook = described_class.new("8/8/8/8/6P1/8/6R1/8")
       start_square = g2_rook.gameboard[54]
       finish_square = g2_rook.gameboard[49]
       it "returns true" do
@@ -108,7 +107,6 @@ describe Board do
     end
 
     context "rook moving up and the path is not clear" do
-      g2_rook = described_class.new("8/8/8/8/6P1/8/6R1/8")
       start_square = g2_rook.gameboard[54]
       finish_square = g2_rook.gameboard[22]
       it "returns false" do
@@ -117,7 +115,6 @@ describe Board do
     end
 
     context "rook moving one square left" do
-      g2_rook = described_class.new("8/8/8/8/6P1/8/6R1/8")
       start_square = g2_rook.gameboard[54]
       finish_square = g2_rook.gameboard[53]
       it "returns true" do

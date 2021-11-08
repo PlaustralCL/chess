@@ -53,25 +53,30 @@ class Board
     start_square.coordinates.last == finish_square.coordinates.last
   end
 
-  # rubocop:todo Metrics/AbcSize
   def clear_path?(start_square, finish_square)
     board = gameboard.each_slice(8).to_a
-    board = board.transpose unless start_square.coordinates.first == finish_square.coordinates.first
-    target_row = select_row(board, start_square, finish_square).flatten
-    target_row = target_row.reverse if target_index(target_row, finish_square) < target_index(target_row, start_square)
-    target_row[target_index(target_row, start_square) + 1..target_index(target_row, finish_square) - 1].map(&:piece).all?("-")
+    board = board.transpose unless same_row?(start_square, finish_square)
+    target_row = select_row(board, start_square, finish_square)
+    target_row = target_row.reverse if negative_movement?(target_row, start_square, finish_square)
+    pieces_present?(target_row, start_square, finish_square)
   end
-  # rubocop:enable Metrics/AbcSize
 
   def select_row(board, start_square, finish_square)
-    board.select { |row| [start_square, finish_square].all? { |square| row.include?(square) } }
     board.select do |row|
       [start_square, finish_square].all? { |square| row.include?(square) }
-    end
+    end.flatten
+  end
+
+  def pieces_present?(target_row, start_square, finish_square)
+    target_row[target_index(target_row, start_square) + 1..target_index(target_row, finish_square) - 1].map(&:piece).all?("-")
   end
 
   def target_index(array, target)
     array.index(target)
+  end
+
+  def negative_movement?(row, start_square, finish_square)
+    target_index(row, finish_square) < target_index(row, start_square)
   end
 
   def square_row(square)
@@ -81,5 +86,4 @@ class Board
   def square_column(square)
     square.coordinates.last
   end
-
 end
