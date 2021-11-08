@@ -28,8 +28,8 @@ class Board
     gameboard[gameboard.index { |square| square.name == name }]
   end
 
-  def different_squares?(start_name, finish_name)
-    start_name != finish_name
+  def different_squares?(start_square, finish_square)
+    start_square != finish_square
   end
 
   def finish_square_allowed?(start_square, finish_square)

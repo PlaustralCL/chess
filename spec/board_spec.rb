@@ -14,13 +14,17 @@ describe Board do
   describe "#different_squares?" do
     context "when start and finish are the same" do
       it "returns fales" do
-        expect(new_board.different_squares?("e2", "e2")).to eq(false)
+        start_square = new_board.gameboard[12]
+        finish_square = new_board.gameboard[12]
+        expect(new_board.different_squares?(start_square, finish_square)).to eq(false)
       end
     end
 
     context "when start and finish are different" do
       it "returns true" do
-        expect(new_board.different_squares?("e2", "e4")).to eq(true)
+        start_square = new_board.gameboard[12]
+        finish_square = new_board.gameboard[28]
+        expect(new_board.different_squares?(start_square, finish_square)).to eq(true)
       end
     end
   end
