@@ -39,24 +39,47 @@ class Board
   def basic_rules?(start_square, finish_square)
     case start_square.piece.downcase
     when "r"
-      start_square.coordinates.first == finish_square.coordinates.first || start_square.coordinates.last == finish_square.coordinates.last
+      same_row?(start_square, finish_square) || same_column?(start_square, finish_square)
     else
       start_square.piece.downcase
     end
+  end
 
+  def same_row?(start_square, finish_square)
+    start_square.coordinates.first == finish_square.coordinates.first
+  end
+
+  def same_column?(start_square, finish_square)
+    start_square.coordinates.last == finish_square.coordinates.last
   end
 
   # rubocop:todo Metrics/AbcSize
   def clear_path?(start_square, finish_square)
-
     board = gameboard.each_slice(8).to_a
     board = board.transpose unless start_square.coordinates.first == finish_square.coordinates.first
-    target_row = board.select { |row| [start_square, finish_square].all? { |square| row.include?(square) } }
-    target_row = target_row.flatten
-    target_row = target_row.reverse if target_row.index(finish_square) < target_row.index(start_square)
-    target_row[target_row.index(start_square) + 1..target_row.index(finish_square) - 1].map(&:piece).all?("-")
+    target_row = select_row(board, start_square, finish_square).flatten
+    target_row = target_row.reverse if target_index(target_row, finish_square) < target_index(target_row, start_square)
+    target_row[target_index(target_row, start_square) + 1..target_index(target_row, finish_square) - 1].map(&:piece).all?("-")
+  end
+  # rubocop:enable Metrics/AbcSize
 
+  def select_row(board, start_square, finish_square)
+    board.select { |row| [start_square, finish_square].all? { |square| row.include?(square) } }
+    board.select do |row|
+      [start_square, finish_square].all? { |square| row.include?(square) }
+    end
+  end
 
+  def target_index(array, target)
+    array.index(target)
+  end
+
+  def square_row(square)
+    square.coordinates.first
+  end
+
+  def square_column(square)
+    square.coordinates.last
   end
 
 end
