@@ -13,7 +13,7 @@ describe Board do
 
   describe "#different_squares?" do
     context "when start and finish are the same" do
-      it "returns fales" do
+      it "returns false" do
         start_square = new_board.gameboard[12]
         finish_square = new_board.gameboard[12]
         expect(new_board.different_squares?(start_square, finish_square)).to eq(false)
@@ -41,6 +41,8 @@ describe Board do
     end
 
     context "when rook moves vertically" do
+      basic_white_rook = described_class.new("8/8/1R4p1/8/8/8/1P6/8")
+      start_square = basic_white_rook.gameboard[17]
       finish_square = basic_white_rook.gameboard[33]
       it "returns true" do
         expect(basic_white_rook.basic_rules?(start_square, finish_square)).to eq(true)
@@ -123,6 +125,26 @@ describe Board do
       finish_square = g2_rook.gameboard[53]
       it "returns true" do
         expect(g2_rook.clear_path?(start_square, finish_square)).to eq(true)
+      end
+    end
+  end
+
+  describe "#valid_move?" do
+    context "rook moving up and the path is not clear" do
+      g2_rook = described_class.new("8/8/8/8/6P1/8/6R1/8")
+      start_name = "g2"
+      finish_name = "g6"
+      it "returns false" do
+        expect(g2_rook.valid_move?(start_name, finish_name)).to eq(false)
+      end
+    end
+
+    context "when rook moves vertically" do
+      basic_white_rook = described_class.new("8/8/1R4p1/8/8/8/1P6/8")
+      start_name = "b6"
+      finish_name = "b4"
+      it "returns true" do
+        expect(basic_white_rook.valid_move?(start_name, finish_name)).to eq(true)
       end
     end
   end

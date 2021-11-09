@@ -21,7 +21,8 @@ class Board
   def valid_move?(start_name, finish_name)
     start_square = name_converter(start_name)
     finish_square = name_converter(finish_name)
-
+    rules = %i[different_squares? finish_square_allowed? basic_rules? clear_path?]
+    rules.all? { |rule| self.send(rule, start_square, finish_square) }
   end
 
   def name_converter(name)
