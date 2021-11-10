@@ -2,13 +2,11 @@
 
 require_relative "board_setup"
 
-# Holds the frameword of the board in a 64 element board. The board can be
-# sliced into an 8 x 8 matrix when needed. Each element of the array will be
-# a Struct that maintains information about each square.
-class Board
+# Validates that q requested rook move is allowed
+class RookMove
   include BoardSetup
 
-  attr_reader :position, :gameboard
+  attr_reader :position, :gameboard, :start_square, :finish_square
 
   def initialize(position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
     @position = position
@@ -16,15 +14,15 @@ class Board
     setup_board
   end
 
-  def name_converter(name)
-    gameboard[gameboard.index { |square| square.name == name }]
+  def valid_move?(start_name, finish_name)
+    @start_square = name_converter(start_name)
+    @finish_square = name_converter(finish_name)
+    rules = %i[different_squares? finish_square_allowed? basic_rules? clear_path?]
+    rules.all? { |rule| send(rule, start_square, finish_square) }
   end
 
-  def valid_move?(start_name, finish_name)
-    start_square = name_converter(start_name)
-    finish_square = name_converter(finish_name)
-    rules = %i[different_squares? finish_square_allowed? basic_rules? clear_path?]
-    rules.all? { |rule| self.send(rule, start_square, finish_square) }
+  def name_converter(name)
+    gameboard[gameboard.index { |square| square.name == name }]
   end
 
   def different_squares?(start_square, finish_square)
@@ -85,4 +83,6 @@ class Board
   def square_column(square)
     square.coordinates.last
   end
+
+
 end

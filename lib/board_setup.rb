@@ -3,6 +3,12 @@
 # Helper methods to set up the board: assign algebraic names, assign grid coordinates,
 # and populate the initial position into the model.
 module BoardSetup
+  Square = Struct.new(:name, :coordinates, :piece, :piece_color)
+
+  def name_converter(name)
+    gameboard[gameboard.index { |square| square.name == name }]
+  end
+
   def setup_board
     assign_square_names
     assign_square_coordinates
