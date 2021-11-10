@@ -14,72 +14,79 @@ describe RookMove do
   describe "#different_squares?" do
     context "when start and finish are the same" do
       it "returns false" do
-        start_square = new_board.gameboard[12]
-        finish_square = new_board.gameboard[12]
-        expect(new_board.different_squares?(start_square, finish_square)).to eq(false)
+        new_board.update_start_square("e7")
+        new_board.update_finish_square("e7")
+        expect(new_board.different_squares?).to eq(false)
       end
     end
 
     context "when start and finish are different" do
       it "returns true" do
-        start_square = new_board.gameboard[12]
-        finish_square = new_board.gameboard[28]
-        expect(new_board.different_squares?(start_square, finish_square)).to eq(true)
+        new_board.update_start_square("e7")
+        new_board.update_finish_square("e5")
+        expect(new_board.different_squares?).to eq(true)
       end
     end
   end
 
   describe "#basic_rules?" do
     basic_white_rook = described_class.new("8/8/1R4p1/8/8/8/1P6/8")
-    start_square = basic_white_rook.gameboard[17]
-
+    # start_square = basic_white_rook.gameboard[17]
     context "when rook moves horizontally" do
-      finish_square = basic_white_rook.gameboard[19]
+      # finish_square = basic_white_rook.gameboard[19]
       it "returns true" do
-        expect(basic_white_rook.basic_rules?(start_square, finish_square)).to eq(true)
+        basic_white_rook.update_start_square("b6")
+        basic_white_rook.update_finish_square("d6")
+        expect(basic_white_rook.basic_rules?).to eq(true)
       end
     end
 
     context "when rook moves vertically" do
       basic_white_rook = described_class.new("8/8/1R4p1/8/8/8/1P6/8")
-      start_square = basic_white_rook.gameboard[17]
-      finish_square = basic_white_rook.gameboard[33]
+      # start_square = basic_white_rook.gameboard[17]
+      # finish_square = basic_white_rook.gameboard[33]
       it "returns true" do
-        expect(basic_white_rook.basic_rules?(start_square, finish_square)).to eq(true)
+        basic_white_rook.update_start_square("b6")
+        basic_white_rook.update_finish_square("b4")
+        expect(basic_white_rook.basic_rules?).to eq(true)
       end
     end
 
     context "when rook moves illeagally" do
-      finish_square = basic_white_rook.gameboard[44]
+      # finish_square = basic_white_rook.gameboard[44]
       it "returns false" do
-        expect(basic_white_rook.basic_rules?(start_square, finish_square)).to eq(false)
+        basic_white_rook.update_start_square("b6")
+        basic_white_rook.update_finish_square("e3")
+        expect(basic_white_rook.basic_rules?).to eq(false)
       end
     end
   end
 
   describe "#finish_square_allowed?" do
     basic_white_rook = described_class.new("8/8/1R4p1/8/8/8/1P6/8")
-    start_square = basic_white_rook.gameboard[17]
+
 
     context "when finish is empty" do
-      finish_square = basic_white_rook.gameboard[19]
       it "returns true" do
-        expect(basic_white_rook.finish_square_allowed?(start_square, finish_square)).to eq(true)
+        basic_white_rook.update_start_square("b6")
+        basic_white_rook.update_finish_square("d6")
+        expect(basic_white_rook.finish_square_allowed?).to eq(true)
       end
     end
 
     context "when finish has opposite colored piece" do
-      finish_square = basic_white_rook.gameboard[22]
       it "returns true" do
-        expect(basic_white_rook.finish_square_allowed?(start_square, finish_square)).to eq(true)
-
+        basic_white_rook.update_start_square("b6")
+        basic_white_rook.update_finish_square("g6")
+        expect(basic_white_rook.finish_square_allowed?).to eq(true)
       end
     end
 
     context "when finish has same colored piece" do
-      finish_square = basic_white_rook.gameboard[49]
       it "returns false" do
-        expect(basic_white_rook.finish_square_allowed?(start_square, finish_square)).to eq(false)
+        basic_white_rook.update_start_square("b6")
+        basic_white_rook.update_finish_square("b2")
+        expect(basic_white_rook.finish_square_allowed?).to eq(false)
       end
     end
   end
@@ -89,42 +96,42 @@ describe RookMove do
     g2_rook = described_class.new("8/8/8/8/6P1/8/6R1/8")
 
     context "rook moving right when the path is not clear" do
-      start_square = white_rook.gameboard[17]
-      finish_square = white_rook.gameboard[22]
       it "returns false" do
-        expect(white_rook.clear_path?(start_square, finish_square)).to eq(false)
+        white_rook.update_start_square("b6")
+        white_rook.update_finish_square("g6")
+        expect(white_rook.clear_path?).to eq(false)
       end
     end
 
     context "rook moving down when the path is clear" do
-      start_square = white_rook.gameboard[17]
-      finish_square = white_rook.gameboard[41]
       it "returns true" do
-        expect(white_rook.clear_path?(start_square, finish_square)).to eq(true)
+        white_rook.update_start_square("b6")
+        white_rook.update_finish_square("b3")
+        expect(white_rook.clear_path?).to eq(true)
       end
     end
 
     context "rook moving left and the path is clear" do
-      start_square = g2_rook.gameboard[54]
-      finish_square = g2_rook.gameboard[49]
       it "returns true" do
-        expect(g2_rook.clear_path?(start_square, finish_square)).to eq(true)
+        g2_rook.update_start_square("g2")
+        g2_rook.update_finish_square("b2")
+        expect(g2_rook.clear_path?).to eq(true)
       end
     end
 
     context "rook moving up and the path is not clear" do
-      start_square = g2_rook.gameboard[54]
-      finish_square = g2_rook.gameboard[22]
       it "returns false" do
-        expect(g2_rook.clear_path?(start_square, finish_square)).to eq(false)
+        g2_rook.update_start_square("g2")
+        g2_rook.update_finish_square("g6")
+        expect(g2_rook.clear_path?).to eq(false)
       end
     end
 
     context "rook moving one square left" do
-      start_square = g2_rook.gameboard[54]
-      finish_square = g2_rook.gameboard[53]
       it "returns true" do
-        expect(g2_rook.clear_path?(start_square, finish_square)).to eq(true)
+        g2_rook.update_start_square("g2")
+        g2_rook.update_finish_square("f2")
+        expect(g2_rook.clear_path?).to eq(true)
       end
     end
   end
