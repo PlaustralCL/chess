@@ -2,7 +2,7 @@
 
 # Helper methods to set up the board: assign algebraic names, assign grid coordinates,
 # and populate the initial position into the model.
-module BoardSetup
+module BoardHelper
   Square = Struct.new(:name, :coordinates, :piece, :piece_color)
 
   def name_converter(name)
@@ -62,4 +62,6 @@ module BoardSetup
       "black"
     end
   end
+
+
 end
