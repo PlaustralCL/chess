@@ -75,7 +75,16 @@ describe KnightMove do
         new_board.update_start_square("g1")
         new_board.update_finish_square("f2")
         expect(new_board.basic_rules?).to eq(false)
+      end
+    end
+  end
 
+  describe "#clear_path?" do
+    context "all paths are clear for a knight" do
+      it "returns true" do
+        new_board.update_start_square("e5")
+        new_board.update_finish_square("d7")
+        expect(new_board.clear_path?).to eq(true)
       end
     end
   end

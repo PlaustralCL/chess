@@ -4,7 +4,6 @@ require_relative "piece_move"
 
 # Validates that a requested rook move is allowed
 class KnightMove < PieceMove
-
   def basic_rules?
     knight_moves = [[1, -2], [2, -1], [2, 1], [1, 2], [-1, 2], [-2, 1], [-2, -1], [-1, -2]]
     relative_position = [
@@ -14,8 +13,9 @@ class KnightMove < PieceMove
     knight_moves.include?(relative_position)
   end
 
+  # A knight's path is always clear
   def clear_path?
-
+    true
   end
 
   def select_row(board)
