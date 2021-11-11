@@ -11,6 +11,7 @@
 #   4 5 6  => |X|4|5|6|X|  => | |4|5|6| | => [[7], [4, 8], [1, 5, 9], [2, 6], [3]]
 #   7 8 9     |7|8|9|X|X|     |7|8|9| | |
 module Diagonal
+  # upper left to lower right
   def diagonals(matrix)
     matrix = copy_matrix(matrix)
     new_width = new_dimensions(matrix)
@@ -21,6 +22,7 @@ module Diagonal
     matrix.transpose.map(&:compact)
   end
 
+  # upper right to lower left
   def anti_diagonals(matrix)
     matrix = copy_matrix(matrix)
     new_width = new_dimensions(matrix)
