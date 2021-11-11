@@ -11,9 +11,8 @@ class Board
   attr_reader :position, :gameboard
 
   def initialize(position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
-    @position = position
     @gameboard = Array.new(64) { Square.new }
-    setup_board
+    setup_board(position)
   end
 
 end

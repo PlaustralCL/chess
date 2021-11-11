@@ -9,10 +9,10 @@ module BoardHelper
     gameboard[gameboard.index { |square| square.name == name }]
   end
 
-  def setup_board
+  def setup_board(position)
     assign_square_names
     assign_square_coordinates
-    write_position(fen_to_array)
+    write_position(fen_to_array(position))
   end
 
   def assign_square_names
@@ -42,7 +42,7 @@ module BoardHelper
     row_numbers.product(col_numbers)
   end
 
-  def fen_to_array
+  def fen_to_array(position)
     position.gsub("/", "")
             .gsub(/\d/) { |num| ("-" * num.to_i) }
             .chars
