@@ -31,9 +31,7 @@ describe RookMove do
 
   describe "#basic_rules?" do
     basic_white_rook = described_class.new("8/8/1R4p1/8/8/8/1P6/8")
-    # start_square = basic_white_rook.gameboard[17]
     context "when rook moves horizontally" do
-      # finish_square = basic_white_rook.gameboard[19]
       it "returns true" do
         basic_white_rook.update_start_square("b6")
         basic_white_rook.update_finish_square("d6")
@@ -43,8 +41,6 @@ describe RookMove do
 
     context "when rook moves vertically" do
       basic_white_rook = described_class.new("8/8/1R4p1/8/8/8/1P6/8")
-      # start_square = basic_white_rook.gameboard[17]
-      # finish_square = basic_white_rook.gameboard[33]
       it "returns true" do
         basic_white_rook.update_start_square("b6")
         basic_white_rook.update_finish_square("b4")
@@ -53,7 +49,6 @@ describe RookMove do
     end
 
     context "when rook moves illeagally" do
-      # finish_square = basic_white_rook.gameboard[44]
       it "returns false" do
         basic_white_rook.update_start_square("b6")
         basic_white_rook.update_finish_square("e3")

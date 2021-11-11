@@ -1,49 +1,11 @@
 # frozen_string_literal: true
 
-require_relative "board_helper"
+require_relative "piece_move"
 
-# Validates that q requested rook move is allowed
-class RookMove
-  include BoardHelper
-
-  attr_reader :position, :gameboard, :start_square, :finish_square
-
-  def initialize(position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
-    @position = position
-    @gameboard = Array.new(64) { Square.new }
-    setup_board
-  end
-
-  # Update based on Observable from Board class
-  def update(gameboard)
-    @gameboard = gameboard
-  end
-
-  def valid_move?(start_name, finish_name)
-    @start_square = name_converter(start_name)
-    @finish_square = name_converter(finish_name)
-    rules = %i[different_squares? finish_square_allowed? basic_rules? clear_path?]
-    rules.all? { |rule| send(rule) }
-  end
-
-  def different_squares?
-    start_square != finish_square
-  end
-
-  def finish_square_allowed?
-    start_square.piece_color != finish_square.piece_color
-  end
-
+# Validates that a requested rook move is allowed
+class RookMove < PieceMove
   def basic_rules?
     same_row? || same_column?
-  end
-
-  def same_row?
-    start_square.coordinates.first == finish_square.coordinates.first
-  end
-
-  def same_column?
-    start_square.coordinates.last == finish_square.coordinates.last
   end
 
   def clear_path?
@@ -71,21 +33,4 @@ class RookMove
   def negative_movement?(row)
     target_index(row, finish_square) < target_index(row, start_square)
   end
-
-  def square_row(square)
-    square.coordinates.first
-  end
-
-  def square_column(square)
-    square.coordinates.last
-  end
-
-  def update_start_square(square_name)
-    @start_square = name_converter(square_name)
-  end
-
-  def update_finish_square(square_name)
-    @finish_square = name_converter(square_name)
-  end
-
 end
