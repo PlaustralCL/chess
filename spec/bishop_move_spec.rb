@@ -46,31 +46,31 @@ describe BishopMove do
       it "returns true" do
         bishop_obstructions.update_start_square("e5")
         bishop_obstructions.update_finish_square("g7")
-        expect(new_board.basic_rules?).to eq(true)
+        expect(bishop_obstructions.clear_path?).to eq(false)
       end
     end
 
-    context "when bishop moves e5 to h2" do
+    context "when bishop moves e5 to h2 with obstruction" do
       it "returns true" do
         bishop_obstructions.update_start_square("e5")
         bishop_obstructions.update_finish_square("h2")
-        expect(new_board.basic_rules?).to eq(true)
+        expect(bishop_obstructions.clear_path?).to eq(false)
       end
     end
 
-    context "when bishop moves e5 to b2" do
+    context "when bishop moves e5 to b2, no obstruction" do
       it "returns true" do
         bishop_obstructions.update_start_square("e5")
         bishop_obstructions.update_finish_square("b2")
-        expect(new_board.basic_rules?).to eq(true)
+        expect(bishop_obstructions.clear_path?).to eq(true)
       end
     end
 
-    context "when bishop moves e5 to c7" do
+    context "when bishop moves e5 to c7, no obstruction" do
       it "returns true" do
         bishop_obstructions.update_start_square("e5")
         bishop_obstructions.update_finish_square("c7")
-        expect(new_board.basic_rules?).to eq(true)
+        expect(bishop_obstructions.clear_path?).to eq(true)
       end
     end
   end

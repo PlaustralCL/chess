@@ -7,11 +7,6 @@ require_relative "diagonal"
 class BishopMove < PieceMove
   include Diagonal
 
-  # Update based on Observable from Board class
-  def update(gameboard)
-    @gameboard = gameboard
-  end
-
   def basic_rules?
     find_diagonal.length >= 1 || find_antidiagonal.length >= 1
   end
@@ -27,11 +22,9 @@ class BishopMove < PieceMove
   end
 
   def clear_path?
-    # board = gameboard.each_slice(8).to_a
-    # board = board.transpose unless same_row?
-    # target_row = select_row(board)
-    # target_row = target_row.reverse if negative_movement?(target_row)
-    # pieces_present?(target_row)
+    target_row = find_diagonal.length >= 1 ? find_diagonal : find_antidiagonal
+    target_row = target_row.reverse if negative_movement?(target_row)
+    pieces_present?(target_row)
   end
 
   def select_row(board)
