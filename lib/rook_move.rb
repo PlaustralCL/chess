@@ -4,6 +4,12 @@ require_relative "piece_move"
 
 # Validates that a requested rook move is allowed
 class RookMove < PieceMove
+
+  # Update based on Observable from Board class
+  def update(gameboard)
+    @gameboard = gameboard
+  end
+
   def basic_rules?
     same_row? || same_column?
   end
