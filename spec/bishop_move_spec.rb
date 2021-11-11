@@ -30,6 +30,14 @@ describe BishopMove do
       end
     end
 
+    context "when bishop moves e5 to a5" do
+      it "returns true" do
+        new_board.update_start_square("e5")
+        new_board.update_finish_square("a5")
+        expect(new_board.basic_rules?).to eq(false)
+      end
+    end
+
     context "when bishop moves e5 to c7" do
       it "returns true" do
         new_board.update_start_square("e5")
