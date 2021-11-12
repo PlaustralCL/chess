@@ -11,6 +11,14 @@ class BishopMove < PieceMove
     find_diagonal.length >= 1 || find_antidiagonal.length >= 1
   end
 
+  def clear_path?
+    target_row = find_diagonal.length >= 1 ? find_diagonal : find_antidiagonal
+    target_row = target_row.reverse if negative_movement?(target_row)
+    pieces_present?(target_row)
+  end
+
+  private
+
   def find_diagonal
     board = diagonals(gameboard.each_slice(8).to_a)
     select_row(board)
@@ -19,12 +27,6 @@ class BishopMove < PieceMove
   def find_antidiagonal
     board = anti_diagonals(gameboard.each_slice(8).to_a)
     select_row(board)
-  end
-
-  def clear_path?
-    target_row = find_diagonal.length >= 1 ? find_diagonal : find_antidiagonal
-    target_row = target_row.reverse if negative_movement?(target_row)
-    pieces_present?(target_row)
   end
 
   def select_row(board)

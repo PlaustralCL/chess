@@ -16,6 +16,8 @@ class RookMove < PieceMove
     pieces_present?(target_row)
   end
 
+  private
+
   def select_row(board)
     board.select do |row|
       [start_square, finish_square].all? { |square| row.include?(square) }

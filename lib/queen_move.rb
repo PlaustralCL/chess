@@ -8,10 +8,18 @@ class QueenMove < PieceMove
   include Diagonal
 
   def basic_rules?
-    # In chess, ranks are the horizonatal rows, the files are vertical columns
     paths = [find_diagonal, find_antidiagonal, find_rank, find_file]
     paths.any? { |row| row.length >= 1 }
   end
+
+  def clear_path?
+    paths = [find_diagonal, find_antidiagonal, find_rank, find_file]
+    target_row = paths.select { |row| row.length >= 1 }.flatten
+    target_row = target_row.reverse if negative_movement?(target_row)
+    pieces_present?(target_row)
+  end
+
+  private
 
   def find_diagonal
     board = diagonals(gameboard.each_slice(8).to_a)
@@ -33,13 +41,6 @@ class QueenMove < PieceMove
     select_row(board)
   end
 
-  def clear_path?
-    paths = [find_diagonal, find_antidiagonal, find_rank, find_file]
-    target_row = paths.select { |row| row.length >= 1 }.flatten
-    target_row = target_row.reverse if negative_movement?(target_row)
-    pieces_present?(target_row)
-  end
-
   def select_row(board)
     board.select do |row|
       [start_square, finish_square].all? { |square| row.include?(square) }
@@ -55,9 +56,6 @@ class QueenMove < PieceMove
   end
 
   def negative_movement?(row)
-    # target_index(row, finish_square) < target_index(row, start_square)
     row.index(finish_square) < row.index(start_square)
   end
-
-
 end
