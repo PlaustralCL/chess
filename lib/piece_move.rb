@@ -33,11 +33,11 @@ class PieceMove
     start_square.piece_color != finish_square.piece_color
   end
 
-  def square_row(square)
+  def row(square)
     square.coordinates.first
   end
 
-  def square_column(square)
+  def column(square)
     square.coordinates.last
   end
 

@@ -7,8 +7,8 @@ class KnightMove < PieceMove
   def basic_rules?
     knight_moves = [[1, -2], [2, -1], [2, 1], [1, 2], [-1, 2], [-2, 1], [-2, -1], [-1, -2]]
     relative_position = [
-      square_row(start_square) - square_row(finish_square),
-      square_column(start_square) - square_column(finish_square)
+      row(start_square) - row(finish_square),
+      column(start_square) - column(finish_square)
     ]
     knight_moves.include?(relative_position)
   end
