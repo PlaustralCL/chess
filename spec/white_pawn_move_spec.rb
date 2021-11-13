@@ -123,7 +123,6 @@ describe WhitePawnMove do
   end
 
   describe "#clear_path?" do
-<<<<<<< HEAD
     subject(:pawn_obstructions) { described_class.new("8/2p5/8/2P5/P3p3/P4p2/4PP1P/8") }
 
     context "pawn move from e2 to e4, black pawn on e3" do
@@ -166,8 +165,6 @@ describe WhitePawnMove do
       end
     end
 
-=======
->>>>>>> 4cd8e4f0de4a6ceaff65b1ff9ce98685be5811df
 
   end
 end
