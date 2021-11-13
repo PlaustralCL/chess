@@ -115,7 +115,7 @@ describe WhitePawnMove do
 
     context "pawn moves diagonally backward" do
       it "returns false" do
-        basic_board.update_start_square("c3")
+        basic_board.update_start_square("g5")
         basic_board.update_finish_square("f4")
         expect(basic_board.basic_rules?).to eq(false)
       end
@@ -125,10 +125,10 @@ describe WhitePawnMove do
   describe "#clear_path?" do
     subject(:pawn_obstructions) { described_class.new("8/2p5/8/2P5/P3p3/P4p2/4PP1P/8") }
 
-    context "pawn move from e2 to e4, black pawn on e3" do
+    context "pawn move from f2 to f4, black pawn on f3" do
       it "returns false" do
-        pawn_obstructions.update_start_square("e2")
-        pawn_obstructions.update_finish_square("e4")
+        pawn_obstructions.update_start_square("f2")
+        pawn_obstructions.update_finish_square("f4")
         expect(pawn_obstructions.clear_path?).to eq(false)
       end
     end
