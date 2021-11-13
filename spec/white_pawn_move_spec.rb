@@ -123,6 +123,48 @@ describe WhitePawnMove do
   end
 
   describe "#clear_path?" do
+    subject(:pawn_obstructions) { described_class.new("8/2p5/8/2P5/P3p3/P4p2/4PP1P/8") }
+
+    context "pawn move from e2 to e4, black pawn on e3" do
+      it "returns false" do
+        pawn_obstructions.update_start_square("e2")
+        pawn_obstructions.update_finish_square("e4")
+        expect(pawn_obstructions.clear_path?).to eq(false)
+      end
+    end
+
+    context "pawn move from a3 to a4, white pawn on e3" do
+      it "returns false" do
+        pawn_obstructions.update_start_square("a3")
+        pawn_obstructions.update_finish_square("a4")
+        expect(pawn_obstructions.clear_path?).to eq(false)
+      end
+    end
+
+    context "pawn move from e2 to e3" do
+      it "returns true" do
+        pawn_obstructions.update_start_square("e2")
+        pawn_obstructions.update_finish_square("e3")
+        expect(pawn_obstructions.clear_path?).to eq(true)
+      end
+    end
+
+    context "pawn move from h2 to h4, no obstructions" do
+      it "returns true" do
+        pawn_obstructions.update_start_square("h2")
+        pawn_obstructions.update_finish_square("h4")
+        expect(pawn_obstructions.clear_path?).to eq(true)
+      end
+    end
+
+    context "pawn c5-c6, black pawn on c7" do
+      it "returns true" do
+        pawn_obstructions.update_start_square("c5")
+        pawn_obstructions.update_finish_square("c6")
+        expect(pawn_obstructions.clear_path?).to eq(true)
+      end
+    end
+
 
   end
 end
