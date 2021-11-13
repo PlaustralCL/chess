@@ -8,6 +8,7 @@ class WhitePawnMove < PieceMove
     basic_move? || capture_allowed?
   end
 
+<<<<<<< HEAD
   # Only applies to straight moves, not captures
   def clear_path?
     return true unless same_column?
@@ -16,11 +17,16 @@ class WhitePawnMove < PieceMove
     target_row = paths.select { |row| row.length >= 1 }.flatten
     target_row = target_row.reverse if negative_movement?(target_row)
     pieces_present?(target_row)
+=======
+  def clear_path?
+
+>>>>>>> 4cd8e4f0de4a6ceaff65b1ff9ce98685be5811df
   end
 
   private
 
   def basic_move?
+<<<<<<< HEAD
     allowed_distance? && same_column?
   end
 
@@ -61,5 +67,16 @@ class WhitePawnMove < PieceMove
 
   def negative_movement?(row)
     row.index(finish_square) < row.index(start_square)
+=======
+    distance = square_row(start_square) == 6 ? [1, 2] : [1]
+    distance.include?(square_row(start_square) - square_row(finish_square)) &&
+      square_column(start_square) == square_column(finish_square)
+  end
+
+  def capture_allowed?
+    square_row(start_square) - square_row(finish_square) == 1 &&
+      (square_column(start_square) - square_column(finish_square)).abs == 1 &&
+      finish_square.piece_color == "black"
+>>>>>>> 4cd8e4f0de4a6ceaff65b1ff9ce98685be5811df
   end
 end
