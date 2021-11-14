@@ -17,8 +17,7 @@ class Board
     setup_board(position)
   end
 
-  def check?(color)
-    finish_name = find_king(color)
+  def check?(color, finish_name = find_king(color))
     enemy_pieces = find_enemies(color)
     enemy_pieces.any? do |square|
       move_object = piece_to_move_object(square.piece)
@@ -26,28 +25,20 @@ class Board
     end
   end
 
-  # rubocop:todo Metrics/MethodLength
-  # rubocop:todo Metrics/CyclomaticComplexity
   def piece_to_move_object(piece_name)
-    case piece_name
-    when "b", "B"
-      BishopMove.new(board_to_fen)
-    when "p"
-      BlackPawnMove.new(board_to_fen)
-    when "k", "K"
-      KingMove.new(board_to_fen)
-    when "n", "N"
-      KnightMove.new(board_to_fen)
-    when "q", "Q"
-      QueenMove.new(board_to_fen)
-    when "r", "R"
-      RookMove.new(board_to_fen)
-    when "P"
-      WhitePawnMove.new(board_to_fen)
-    end
+    piece_name = piece_name.downcase == "p" ? piece_name : piece_name.downcase
+    move_options = {
+      "b" => BishopMove,
+      "p" => BlackPawnMove,
+      "k" => KingMove,
+      "n" => KnightMove,
+      "q" => QueenMove,
+      "r" => RookMove,
+      "P" => WhitePawnMove
+    }
+    mover = move_options[piece_name]
+    mover.new(board_to_fen)
   end
-  # rubocop:enable Metrics/MethodLength
-  # rubocop:enable  Metrics/CyclomaticComplexity
 
   def find_king(color)
     king_square = gameboard.select { |square| square.piece.downcase == "k" && square.piece_color == color }
@@ -56,7 +47,6 @@ class Board
 
   def find_enemies(color)
     enemy_color = color == "white" ? "black" : "white"
-    enemies = gameboard.select { |square| square.piece_color == enemy_color }
-    # enemies.map(&:name)
+    gameboard.select { |square| square.piece_color == enemy_color }
   end
 end
