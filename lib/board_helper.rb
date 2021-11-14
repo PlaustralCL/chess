@@ -63,5 +63,9 @@ module BoardHelper
     end
   end
 
-
+  def board_to_fen
+    fen = gameboard.map(&:piece)
+    fen = fen.each_slice(8).to_a.map(&:join).join("/")
+    fen.gsub(/-+/) { |dash| dash.length.to_s }
+  end
 end

@@ -9,6 +9,6 @@ class KingMove < PieceMove
   end
 
   def clear_path?
-    true
+    false
   end
 end
