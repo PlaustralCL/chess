@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "../lib/white_pawn_move"
+require_relative "../../lib/moves/white_pawn_move"
 
 describe WhitePawnMove do
   subject(:basic_board) { described_class.new("8/P7/1P3p1p/6P1/8/2P5/4P3/8") }

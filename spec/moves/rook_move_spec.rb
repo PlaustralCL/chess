@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "../lib/rook_move"
+require_relative "../../lib/moves/rook_move"
 
 describe RookMove do
   subject(:new_board) { described_class.new }

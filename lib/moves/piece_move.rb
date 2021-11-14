@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "board_helper"
+require_relative "../board_helper"
 
 # Parent class for checking the validity of piece moves
 class PieceMove

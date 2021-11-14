@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "../lib/queen_move"
+require_relative "../../lib/moves/queen_move"
 
 describe QueenMove do
   describe "#basic_rules?" do
