@@ -1,10 +1,18 @@
 # frozen_string_literal: true
 
 require_relative "moves"
+require_relative "board_helper"
 
 # Methods to determine if a king is in check
-module Check
+class Check
   include Moves
+  include BoardHelper
+
+  attr_reader :gameboard
+
+  def initialize(gameboard)
+    @gameboard = gameboard
+  end
 
   def check?(color, finish_name = find_king(color))
     enemy_pieces = find_enemies(color)

@@ -5,8 +5,6 @@ require_relative "../check"
 
 # Validates that a requested king move is allowed
 class KingMove < PieceMove
-  include Check
-
   def basic_rules?
     king_moves = [[-1, 0], [-1, 1], [0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1]]
     relative_position = [
@@ -20,6 +18,6 @@ class KingMove < PieceMove
   def clear_path?
     king_color = start_square.piece_color
     # If the finish square would not be check then the path is clear
-    !check?(king_color, finish_square.name)
+    !Check.new(gameboard).check?(king_color, finish_square.name)
   end
 end
