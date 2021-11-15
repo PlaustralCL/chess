@@ -77,6 +77,25 @@ describe KingMove do
         expect(basic_king.basic_rules?).to eq(false)
       end
     end
+  end
 
+  describe "clear_path?" do
+    bishop_board = described_class.new("8/2b5/8/8/4K3/8/8/8")
+
+    context "when king moves e4-e5, bishop blocks e5" do
+      it "returns false" do
+        bishop_board.update_start_square("e4")
+        bishop_board.update_finish_square("e5")
+        expect(bishop_board.clear_path?).to eq(false)
+      end
+    end
+
+    context "when king moves e4-d3, bishop blocks e5 and f4" do
+      it "returns true" do
+        bishop_board.update_start_square("e4")
+        bishop_board.update_finish_square("d3")
+        expect(bishop_board.clear_path?).to eq(true)
+      end
+    end
   end
 end
