@@ -13,7 +13,6 @@ class PieceMove
     setup_board(position)
   end
 
-  # Update based on Observable from Board class
   def update(gameboard)
     @gameboard = gameboard
   end
