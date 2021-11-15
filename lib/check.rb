@@ -15,8 +15,12 @@ class Check
   end
 
   def check?(color, finish_name = find_king(color))
+    checking_pieces(color, finish_name).length >= 1
+  end
+
+  def checking_pieces(color, finish_name = find_king(color))
     enemy_pieces = find_enemies(color)
-    enemy_pieces.any? do |square|
+    enemy_pieces.select do |square|
       move_object = piece_to_move_object(square.piece)
       move_object.valid_move?(square.name, finish_name)
     end
