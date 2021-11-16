@@ -17,6 +17,6 @@ class Board
   end
 
   def check?(color)
-    Check.new(gameboard).check?(color)
+    Check.new(board_to_fen).check?(color)
   end
 end

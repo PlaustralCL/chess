@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
-require_relative "../lib/board"
 require_relative "../lib/check"
 
-describe Board do
+describe Check do
   subject(:new_board) { described_class.new }
 
   describe "#check?" do
@@ -75,4 +74,20 @@ describe Board do
       end
     end
   end
+
+  describe "#checking_pieces" do
+    context "when no checking pieces" do
+      it "returns an empty array []" do
+        expect(new_board.checking_pieces("white")).to eq([])
+      end
+    end
+
+    context "when multiple checking pieces" do
+      it "returns an array with all the checking pieces" do
+        multiple_check_board = described_class.new("k1q5/8/8/8/4bp2/6n1/8/7K")
+        expect(multiple_check_board.checking_pieces("white").length).to eq(2)
+      end
+    end
+  end
+
 end

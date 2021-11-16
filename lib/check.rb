@@ -10,8 +10,9 @@ class Check
 
   attr_reader :gameboard
 
-  def initialize(gameboard)
-    @gameboard = gameboard
+  def initialize(position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
+    @gameboard = Array.new(64) { Square.new }
+    setup_board(position)
   end
 
   def check?(color, finish_name = find_king(color))
