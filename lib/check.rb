@@ -25,13 +25,33 @@ class Check
     checking_pieces.length >= 1
   end
 
-  def checkmate
+  def checkmate?
     check? && no_escape?
   end
 
+  def no_escape?
+    no_safe_square?
+  end
+
+  # Returns true if there are no safe squares for the king, false if the king
+  # has an escape square
+  def no_safe_square?
+    start_name = find_king
+    gameboard.none? { |square| KingMove.new(board_to_fen).valid_move?(start_name, square.name) }
+  end
+
+  def capture_checking_piece?
+    ally_pieces = find_allies
+    danger_pieces = checking_pieces
+    ally_pieces.any? do |square|
+      move_object = piece_to_move_object(square.piece)
+      move_object.valid_move?(square.name, finish_name)
+    end
+
+  end
+
   def checking_pieces
-    enemy_pieces = find_enemies
-    enemy_pieces.select do |square|
+    find_enemies.select do |square|
       move_object = piece_to_move_object(square.piece)
       move_object.valid_move?(square.name, finish_name)
     end
@@ -60,5 +80,9 @@ class Check
   def find_enemies
     enemy_color = king_color == "white" ? "black" : "white"
     gameboard.select { |square| square.piece_color == enemy_color }
+  end
+
+  def find_allies
+    gameboard.select { |square| square.piece_color == king_color }
   end
 end
