@@ -1,78 +1,8 @@
 # frozen_string_literal: true
 
 require_relative "../lib/board"
-require_relative "../lib/check"
 
 describe Board do
   subject(:new_board) { described_class.new }
 
-  describe "#check?" do
-    context "when the king is not in check" do
-      it "returns false" do
-        no_check_board = described_class.new("kq6/2p5/rnb5/8/8/8/8/6K1")
-        expect(no_check_board.check?("white")).to eq(false)
-      end
-    end
-
-    context "when new board, white" do
-      it "returns false" do
-        expect(new_board.check?("white")).to eq(false)
-      end
-    end
-
-    context "when new board, black" do
-      it "returns false" do
-        expect(new_board.check?("black")).to eq(false)
-      end
-    end
-
-    context "when checked by a rook" do
-      it "returns true" do
-        rook_check_board = described_class.new("k7/6r1/8/8/8/8/8/6K1")
-        expect(rook_check_board.check?("white")).to eq(true)
-      end
-    end
-
-    context "when rook is blocked by a pawn" do
-      it "returns false" do
-        no_rook_check_board = described_class.new("k7/6r1/8/6p1/8/8/8/6K1")
-        expect(no_rook_check_board.check?("white")).to eq(false)
-      end
-    end
-
-    context "when checked by a knight" do
-      it "returns true" do
-        knight_check_board = described_class.new("k7/8/1N6/8/8/8/8/6K1")
-        expect(knight_check_board.check?("black")).to eq(true)
-      end
-    end
-
-    context "when checked by a bishop" do
-      it "returns true" do
-        bishop_check = described_class.new("k7/8/8/3B4/8/8/8/6K1")
-        expect(bishop_check.check?("black")).to eq(true)
-      end
-    end
-
-    context "when checked by a queen" do
-      it "returns true" do
-        queen_check = described_class.new("k7/8/8/8/8/8/8/3q2K1")
-        expect(queen_check.check?("white")).to eq(true)
-      end
-    end
-
-    context "when checked by a white pawn" do
-      it "returns true" do
-        white_pawn_check = described_class.new("k7/1P6/8/8/8/8/8/6K1")
-        expect(white_pawn_check.check?("black")).to eq(true)
-      end
-    end
-
-    context "when checked by a black pawn" do
-      it "returns true" do
-        black_pawn_check = described_class.new("k7/8/8/8/8/8/5p2/6K1")
-        expect(black_pawn_check.check?("white")).to eq(true)
-      end
-    end
-  end
 end
