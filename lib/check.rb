@@ -30,24 +30,28 @@ class Check
   end
 
   def no_escape?
-    no_safe_square?
+    return false if safe_square? || capture_checking_piece?
+
+    true
   end
 
-  # Returns true if there are no safe squares for the king, false if the king
-  # has an escape square
-  def no_safe_square?
+  # rubocop:todo Metrics/AbcSize
+  def safe_square?
     start_name = find_king
-    gameboard.none? { |square| KingMove.new(board_to_fen).valid_move?(start_name, square.name) }
+    gameboard.any? { |square| KingMove.new(board_to_fen).valid_move?(start_name, square.name) }
   end
 
+  # Only one piece can be captured in a turn. If two or more pieces are giving check, the king
+  # will need to move, which is looked at by another method. The king capturing
+  # the checking piece is the king moving to a safe square.
   def capture_checking_piece?
-    ally_pieces = find_allies
-    danger_pieces = checking_pieces
-    ally_pieces.any? do |square|
+    return true if checking_pieces.length > 1
+
+    finish_name = checking_pieces.first.name
+    find_allies.any? do |square|
       move_object = piece_to_move_object(square.piece)
       move_object.valid_move?(square.name, finish_name)
     end
-
   end
 
   def checking_pieces

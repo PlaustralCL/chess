@@ -107,7 +107,7 @@ describe Check do
 
     # no_capture?
     context "the checking piece can be captured by an ally" do
-      xit "returns false" do
+      it "returns false" do
         rook_check_bishop_capture = described_class.new("black", "5Rk1/6pp/3b4/8/8/8/8/3K4")
         expect(rook_check_bishop_capture.checkmate?).to eq(false)
       end
@@ -128,7 +128,7 @@ describe Check do
       end
     end
 
-    # move the king to a save square
+    # move the king to a safe square
     context "the checking piece can be captured by the king" do
       it "returns false" do
         rook_check_king_capture = described_class.new("black", "5Rk1/6pp/8/8/8/8/8/3K4")
@@ -140,6 +140,28 @@ describe Check do
       it "returns false" do
         escape_square = described_class.new("white", "6k1/8/8/8/8/8/4nPP1/6K1")
         expect(escape_square.checkmate?).to eq(false)
+      end
+    end
+
+    # block the checking piece
+    context "when the checking piece can be blocked" do
+      it "returns false" do
+        blocking_board_rook = described_class.new("white", "6k1/8/8/8/4R3/8/5PPP/2r3K1")
+        expect(blocking_board_rook.checkmate?).to eq(false)
+      end
+    end
+
+    context "when a pawn moves one square to block" do
+      it "returns false" do
+        blocking_board_pawn = described_class.new("white", "6k1/6r1/2b5/8/8/7P/5P1P/7K")
+        expect(blocking_board_pawn.checkmate?).to eq(false)
+      end
+    end
+
+    context "when a pawn moves two square to block" do
+      it "returns false" do
+        blocking_board_pawn = described_class.new("white", "6k1/6r1/3b4/8/8/7P/5P1K/7R")
+        expect(blocking_board_pawn.checkmate?).to eq(false)
       end
     end
 
