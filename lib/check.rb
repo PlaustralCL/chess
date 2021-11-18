@@ -35,7 +35,6 @@ class Check
     true
   end
 
-  # rubocop:todo Metrics/AbcSize
   def safe_square?
     start_name = find_king
     gameboard.any? { |square| KingMove.new(board_to_fen).valid_move?(start_name, square.name) }
@@ -45,13 +44,20 @@ class Check
   # will need to move, which is looked at by another method. The king capturing
   # the checking piece is the king moving to a safe square.
   def capture_checking_piece?
-    return true if checking_pieces.length > 1
+    return false if checking_pieces.length > 1
 
     finish_name = checking_pieces.first.name
     find_allies.any? do |square|
       move_object = piece_to_move_object(square.piece)
       move_object.valid_move?(square.name, finish_name)
     end
+  end
+
+  # Only one piece can be captured in a turn. If two or more pieces are giving check, the king
+  # will need to move, which is looked at by another method.
+  def block_the_check?
+    return false if checking_pieces.length > 1
+
   end
 
   def checking_pieces

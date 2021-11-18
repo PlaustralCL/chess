@@ -105,7 +105,7 @@ describe Check do
       end
     end
 
-    # no_capture?
+    # capture_checking_piece?
     context "the checking piece can be captured by an ally" do
       it "returns false" do
         rook_check_bishop_capture = described_class.new("black", "5Rk1/6pp/3b4/8/8/8/8/3K4")
@@ -113,11 +113,17 @@ describe Check do
       end
     end
 
+    context "double check" do
+      it "returns true" do
+        double_check = described_class.new("black", "6rk/5Np1/8/8/8/8/8/6KR")
+        expect(double_check.checkmate?).to eq(true)
+      end
+    end
+
     context "the checking piece could be captured by the king but it is guarded" do
       xit "returns true" do
         rook_guarded = described_class.new("black", "5Rk1/6pp/8/2B5/8/8/8/3K4")
         expect(rook_guarded.checkmate?).to eq(true)
-
       end
     end
 
