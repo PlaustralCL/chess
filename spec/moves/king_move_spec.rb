@@ -116,4 +116,27 @@ describe KingMove do
       end
     end
   end
+
+  describe "#remove_king" do
+    context "when king starts on a8" do
+      it "replaces king with empty piece '-'" do
+        basic_king = described_class.new("K7/8/8/8/8/8/8/8")
+        basic_king.update_start_square("a8")
+        basic_king.update_finish_square("b8")
+        basic_king.remove_king
+        expect(basic_king.start_square.piece).to eq("-")
+      end
+    end
+
+    context "when king starts on a8" do
+      it "replaces king with empty piece '-'" do
+        basic_king = described_class.new("K7/8/8/8/8/8/8/8")
+        basic_king.update_start_square("a8")
+        basic_king.update_finish_square("b8")
+        basic_king.remove_king
+        expect(basic_king.gameboard[0].piece).to eq("-")
+      end
+    end
+  end
+
 end

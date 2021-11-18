@@ -18,6 +18,12 @@ class KingMove < PieceMove
   def clear_path?
     king_color = start_square.piece_color
     # If the finish square would not be check then the path is clear
+    remove_king
     !Check.new(king_color, board_to_fen, finish_square.name).check?
+  end
+
+  def remove_king
+    start_square.piece = "-"
+    start_square.piece_color = nil
   end
 end
