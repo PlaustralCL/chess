@@ -97,5 +97,23 @@ describe KingMove do
         expect(bishop_board.clear_path?).to eq(true)
       end
     end
+
+    context "check shadow - when king moves g1-h1, rook blocks h1 from c1" do
+      it "returns false" do
+        rook_check = described_class.new("6k1/8/8/8/4R3/8/5PPP/2r3K1")
+        rook_check.update_start_square("g1")
+        rook_check.update_finish_square("h1")
+        expect(rook_check.clear_path?).to eq(false)
+      end
+    end
+
+    context "check shadow - when the king moves f2-g1, checked by bishop on d5" do
+      it "returns false" do
+        bishop_check = described_class.new("6k1/8/8/2b5/8/8/5KPP/8")
+        bishop_check.update_start_square("f2")
+        bishop_check.update_finish_square("g1")
+        expect(bishop_check.clear_path?).to eq(false)
+      end
+    end
   end
 end
