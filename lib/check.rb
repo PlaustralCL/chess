@@ -62,11 +62,13 @@ class Check
     return false if checking_pieces.length > 1
 
     checking_path = find_path
-    find_allies.any? do |ally_square|
-      move_object = piece_to_move_object(ally_square.piece)
-      checking_path.any? do |finish_square|
-        move_object.valid_move?(ally_square.name, finish_square.name)
-      end
+    find_allies.any? { |ally_square| ally_move_to_blocking_square?(checking_path, ally_square) }
+  end
+
+  def ally_move_to_blocking_square?(checking_path, ally_square)
+    move_object = piece_to_move_object(ally_square.piece)
+    checking_path.any? do |finish_square|
+      move_object.valid_move?(ally_square.name, finish_square.name)
     end
   end
 
