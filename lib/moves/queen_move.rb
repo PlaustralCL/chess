@@ -2,10 +2,12 @@
 
 require_relative "piece_move"
 require_relative "diagonal"
+require_relative "../path"
 
 # Validates that a requested queen move is allowed
 class QueenMove < PieceMove
   include Diagonal
+  include Path
 
   def basic_rules?
     paths = [find_diagonal, find_antidiagonal, find_rank, find_file]
@@ -16,46 +18,6 @@ class QueenMove < PieceMove
     paths = [find_diagonal, find_antidiagonal, find_rank, find_file]
     target_row = paths.select { |row| row.length >= 1 }.flatten
     target_row = target_row.reverse if negative_movement?(target_row)
-    pieces_present?(target_row)
-  end
-
-  private
-
-  def find_diagonal
-    board = diagonals(gameboard.each_slice(8).to_a)
-    select_row(board)
-  end
-
-  def find_antidiagonal
-    board = anti_diagonals(gameboard.each_slice(8).to_a)
-    select_row(board)
-  end
-
-  def find_rank
-    board = gameboard.each_slice(8).to_a
-    select_row(board)
-  end
-
-  def find_file
-    board = gameboard.each_slice(8).to_a.transpose
-    select_row(board)
-  end
-
-  def select_row(board)
-    board.select do |row|
-      [start_square, finish_square].all? { |square| row.include?(square) }
-    end.flatten
-  end
-
-  def pieces_present?(target_row)
-    target_row[target_index(target_row, start_square) + 1..target_index(target_row, finish_square) - 1].map(&:piece).all?("-")
-  end
-
-  def target_index(array, target)
-    array.index(target)
-  end
-
-  def negative_movement?(row)
-    row.index(finish_square) < row.index(start_square)
+    final_path(target_row).map(&:piece).all?("-")
   end
 end

@@ -2,12 +2,14 @@
 
 require_relative "moves"
 require_relative "board_helper"
+require_relative "path"
 
 # rubocop:todo Metrics/ClassLength
 # Methods to determine if a king is in check
 class Check
   include Moves
   include BoardHelper
+  include Path
 
   attr_reader :gameboard, :king_color, :finish_name
 
@@ -104,54 +106,11 @@ class Check
     gameboard.select { |square| square.piece_color == king_color }
   end
 
-  ### Path related methods ###
-
-  def find_path
-    paths = [find_diagonal, find_antidiagonal, find_rank, find_file]
-    target_row = paths.select { |row| row.length >= 1 }.flatten
-    target_row = target_row.reverse if negative_movement?(target_row)
-    final_path(target_row).to_a
+  def start_square
+    checking_pieces.first
   end
 
-  def find_diagonal
-    board = diagonals(gameboard.each_slice(8).to_a)
-    select_row(board)
+  def finish_square
+    find_king
   end
-
-  def find_antidiagonal
-    board = anti_diagonals(gameboard.each_slice(8).to_a)
-    select_row(board)
-  end
-
-  def find_rank
-    board = gameboard.each_slice(8).to_a
-    select_row(board)
-  end
-
-  def find_file
-    board = gameboard.each_slice(8).to_a.transpose
-    select_row(board)
-  end
-
-  # need start and finish squares
-  def select_row(board, start_square = checking_pieces.first, finish_square = find_king)
-    board.select do |row|
-      [start_square, finish_square].all? { |square| row.include?(square) }
-    end.flatten
-  end
-
-  # need start and finish squares
-  def final_path(target_row, start_square = checking_pieces.first, finish_square = find_king)
-    target_row[target_index(target_row, start_square) + 1..target_index(target_row, finish_square) - 1].map
-  end
-
-  def target_index(array, target)
-    array.index(target)
-  end
-
-  # need start and finish squares
-  def negative_movement?(row, start_square = checking_pieces.first, finish_square = find_king)
-    row.index(finish_square) < row.index(start_square)
-  end
-
 end
