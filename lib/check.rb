@@ -2,14 +2,12 @@
 
 require_relative "moves"
 require_relative "board_helper"
-require_relative "path"
 
 # rubocop:todo Metrics/ClassLength
 # Methods to determine if a king is in check
 class Check
   include Moves
   include BoardHelper
-  include Path
 
   attr_reader :gameboard, :king_color, :finish_name
 

@@ -9,8 +9,10 @@ require_relative "moves/queen_move"
 require_relative "moves/rook_move"
 require_relative "moves/white_pawn_move"
 require_relative "moves/diagonal"
+require_relative "moves/path"
 
 # Hold all the piece related classes in one place.
 module Moves
   include Diagonal
+  include Path
 end

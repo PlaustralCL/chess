@@ -2,7 +2,7 @@
 
 require_relative "piece_move"
 require_relative "diagonal"
-require_relative "../path"
+require_relative "path"
 
 # Validates that a requested queen move is allowed
 class QueenMove < PieceMove
