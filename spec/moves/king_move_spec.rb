@@ -115,6 +115,15 @@ describe KingMove do
         expect(bishop_check.clear_path?).to eq(false)
       end
     end
+
+    context "when the king moves g8-f8, and f8 is guarded" do
+      it "returns false" do
+        guarded_piece = described_class.new("5Rk1/6pp/8/2B5/8/8/8/3K4")
+        guarded_piece.update_start_square("g8")
+        guarded_piece.update_finish_square("f8")
+        expect(guarded_piece.clear_path?).to eq(false)
+      end
+    end
   end
 
   describe "#remove_king" do

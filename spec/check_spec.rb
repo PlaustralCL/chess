@@ -99,7 +99,7 @@ describe Check do
     end
 
     context "the king is in checkmate" do
-      xit "returns true" do
+      it "returns true" do
         back_rank_mate = described_class.new("black", "3R2k1/5ppp/8/8/8/8/8/3K4")
         expect(back_rank_mate.checkmate?).to eq(true)
       end
@@ -121,14 +121,14 @@ describe Check do
     end
 
     context "the checking piece could be captured by the king but it is guarded" do
-      xit "returns true" do
+      it "returns true" do
         rook_guarded = described_class.new("black", "5Rk1/6pp/8/2B5/8/8/8/3K4")
         expect(rook_guarded.checkmate?).to eq(true)
       end
     end
 
     context "the checking piece cannot be captured" do
-      xit "returns true" do
+      it "returns true" do
         back_rank_mate = described_class.new("black", "3R2k1/5ppp/8/8/8/8/8/3K4")
         expect(back_rank_mate.checkmate?).to eq(true)
       end
