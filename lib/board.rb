@@ -19,4 +19,8 @@ class Board
   def check?(color)
     Check.new(board_to_fen).check?(color)
   end
+
+  def piece_locations(player_color)
+    gameboard.select { |square| square.piece_color == player_color }
+  end
 end
