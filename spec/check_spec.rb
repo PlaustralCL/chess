@@ -171,6 +171,34 @@ describe Check do
       end
     end
 
+    context "smothered mate" do
+      it "returns true" do
+        smothered_mate = described_class.new("white", "8/8/8/8/8/8/5nPP/6RK")
+        expect(smothered_mate.checkmate?).to eq(true)
+      end
+    end
+
+    context "hook mate" do
+      it "returns true" do
+        hook_mate = described_class.new("black", "4R3/4kp2/5N2/4P3/8/8/8/6K1")
+        expect(hook_mate.checkmate?).to eq(true)
+      end
+    end
+
+    context "anastasia's mate" do
+      it "returns true" do
+        anastasia_mate = described_class.new("black", "5r2/1b2Nppk/8/7R/8/8/5PPP/6K1")
+        expect(anastasia_mate.checkmate?).to eq(true)
+      end
+    end
+
+    context "boden's mate" do
+      it "returns true" do
+        bowdens_mate = described_class.new("white", "2k1r2r/ppp3pp/2n5/3B1b2/5P2/b1P1BQ2/P2N1P1P/2KR3R")
+        expect(bowdens_mate.checkmate?).to eq(true)
+      end
+    end
+
   end
 
 end
