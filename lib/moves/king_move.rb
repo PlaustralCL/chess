@@ -17,19 +17,14 @@ class KingMove < PieceMove
   # Only looks for pieces guarding/attacking the finish_square
   def clear_path?
     king_color = start_square.piece_color
-    # If the finish square would not be check then the path is clear
-    remove_king
-    remove_finish_square
+    move_king
     !Check.new(king_color, board_to_fen, finish_square.name).check?
   end
 
-  def remove_king
+  def move_king
+    finish_square.piece = start_square.piece
+    finish_square.piece_color = start_square.piece_color
     start_square.piece = "-"
     start_square.piece_color = nil
-  end
-
-  def remove_finish_square
-    finish_square.piece = "-"
-    finish_square.piece_color = nil
   end
 end

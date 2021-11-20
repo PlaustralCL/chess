@@ -3,7 +3,6 @@
 require_relative "moves"
 require_relative "board_helper"
 
-# rubocop:todo Metrics/ClassLength
 # Methods to determine if a king is in check
 class Check
   include Moves
@@ -58,6 +57,7 @@ class Check
   # will need to move, which is looked at by another method.
   def block_the_check?
     return false if checking_pieces.length > 1
+    return false if %w[n p].include?(checking_pieces.first.piece.downcase)
 
     checking_path = find_path
     find_allies.any? { |ally_square| ally_move_to_blocking_square?(checking_path, ally_square) }
@@ -106,10 +106,12 @@ class Check
     gameboard.select { |square| square.piece_color == king_color }
   end
 
+  # This is needed for the Path methods
   def start_square
     checking_pieces.first
   end
 
+  # This is needed for the Path methods
   def finish_square
     find_king
   end

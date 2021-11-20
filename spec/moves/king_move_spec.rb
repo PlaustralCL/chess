@@ -124,28 +124,14 @@ describe KingMove do
         expect(guarded_piece.clear_path?).to eq(false)
       end
     end
-  end
 
-  describe "#remove_king" do
-    context "when king starts on a8" do
-      it "replaces king with empty piece '-'" do
-        basic_king = described_class.new("K7/8/8/8/8/8/8/8")
-        basic_king.update_start_square("a8")
-        basic_king.update_finish_square("b8")
-        basic_king.remove_king
-        expect(basic_king.start_square.piece).to eq("-")
-      end
-    end
-
-    context "when king starts on a8" do
-      it "replaces king with empty piece '-'" do
-        basic_king = described_class.new("K7/8/8/8/8/8/8/8")
-        basic_king.update_start_square("a8")
-        basic_king.update_finish_square("b8")
-        basic_king.remove_king
-        expect(basic_king.gameboard[0].piece).to eq("-")
+    context "hook mate" do
+      it "returns true" do
+        hook_mate = described_class.new("4R3/4kp2/5N2/4P3/8/8/8/6K1")
+        hook_mate.update_start_square("e7")
+        hook_mate.update_finish_square("d6")
+        expect(hook_mate.clear_path?).to eq(false)
       end
     end
   end
-
 end
