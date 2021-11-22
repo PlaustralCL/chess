@@ -8,17 +8,17 @@ class Check
   include Moves
   include BoardHelper
 
-  attr_reader :gameboard, :king_color, :finish_name
+  attr_reader :gameboard, :king_color, :king_location
 
   # The variable king_color is for the color of the king that may be in check/ checkmate.
   # For a KingMove, it would be the color of the king moving. At the end of a player's
   # turn, it would be the other player's color to see if the most recent move
   # placed his opponet in check or checkmate.
-  def initialize(king_color, position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR", finish_name = nil)
+  def initialize(king_color, position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR", king_location = nil)
     @gameboard = Array.new(64) { Square.new }
     setup_board(position)
     @king_color = king_color
-    @finish_name = finish_name || find_king.name
+    @king_location = king_location || find_king.name
   end
 
   def check?
@@ -49,7 +49,7 @@ class Check
     finish_name = checking_pieces.first.name
     find_allies.any? do |square|
       move_object = piece_to_move_object(square.piece)
-      move_object.valid_move?(square.name, finish_name)
+      move_object.valid_move?(square.name, king_location)
     end
   end
 
@@ -73,7 +73,7 @@ class Check
   def checking_pieces
     find_enemies.select do |square|
       move_object = piece_to_move_object(square.piece)
-      move_object.valid_move?(square.name, finish_name)
+      move_object.valid_move?(square.name, king_location)
     end
   end
 
