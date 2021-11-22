@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "pry"
 require_relative "moves"
 require_relative "board_helper"
 
@@ -49,7 +50,7 @@ class Check
     finish_name = checking_pieces.first.name
     find_allies.any? do |square|
       move_object = piece_to_move_object(square.piece)
-      move_object.valid_move?(square.name, king_location)
+      move_object.valid_move?(square.name, finish_name)
     end
   end
 

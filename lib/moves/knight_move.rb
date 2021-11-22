@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "piece_move"
+require_relative "../check"
 
 # Validates that a requested rook move is allowed
 class KnightMove < PieceMove
@@ -17,5 +18,4 @@ class KnightMove < PieceMove
   def clear_path?
     true
   end
-
 end

@@ -165,4 +165,20 @@ describe BlackPawnMove do
       end
     end
   end
+
+  describe "#valid_move" do
+    context "when pinned pawn tries to move" do
+      it "returns false" do
+        pinned_bishop = described_class.new("5k2/8/5p2/4P3/8/8/5R2/6K1")
+        expect(pinned_bishop.valid_move?("f6", "e5")).to eq(false)
+      end
+    end
+
+    context "when non-pinned bishop tries to move" do
+      it "returns true" do
+        pinned_bishop = described_class.new("5k2/8/5p2/4P3/8/8/8/6K1")
+        expect(pinned_bishop.valid_move?("f6", "e5")).to eq(true)
+      end
+    end
+  end
 end

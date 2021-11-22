@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "piece_move"
+require_relative "../check"
 
 # Validates that a requested pawn move is allowed
 class WhitePawnMove < PieceMove

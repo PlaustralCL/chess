@@ -82,4 +82,20 @@ describe BishopMove do
       end
     end
   end
+
+  describe "#valid_move" do
+    context "when pinned bishop tries to move" do
+      it "returns false" do
+        pinned_bishop = described_class.new("5k2/8/5b2/8/8/8/5R2/6K1")
+        expect(pinned_bishop.valid_move?("f6", "e7")).to eq(false)
+      end
+    end
+
+    context "when non-pinned bishop tries to move" do
+      it "returns true" do
+        pinned_bishop = described_class.new("5k2/8/5b2/8/8/8/8/6K1")
+        expect(pinned_bishop.valid_move?("f6", "e7")).to eq(true)
+      end
+    end
+  end
 end

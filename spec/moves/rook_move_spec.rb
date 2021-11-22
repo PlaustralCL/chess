@@ -142,7 +142,7 @@ describe RookMove do
     end
 
     context "when rook moves vertically" do
-      basic_white_rook = described_class.new("6k1/8/1R4p1/8/8/8/1P6/1K6")
+      basic_white_rook = described_class.new("6k1/8/1R4p1/8/8/8/1P6/4K3")
       start_name = "b6"
       finish_name = "b4"
       it "returns true" do

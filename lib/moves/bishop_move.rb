@@ -2,6 +2,7 @@
 
 require_relative "piece_move"
 require_relative "diagonal"
+require_relative "../check"
 
 # Validates that a requested rook move is allowed
 class BishopMove < PieceMove

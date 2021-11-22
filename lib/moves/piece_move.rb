@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "pry"
 require_relative "../board_helper"
 
 # Parent class for checking the validity of piece moves
@@ -20,7 +21,7 @@ class PieceMove
   def valid_move?(start_name, finish_name)
     @start_square = name_converter(start_name)
     @finish_square = name_converter(finish_name)
-    rules = %i[different_squares? finish_square_allowed? basic_rules? clear_path?]
+    rules = %i[different_squares? finish_square_allowed? basic_rules? clear_path? safe_king?]
     rules.all? { |rule| send(rule) }
   end
 
@@ -30,6 +31,12 @@ class PieceMove
 
   def finish_square_allowed?
     start_square.piece_color != finish_square.piece_color
+  end
+
+  def safe_king?
+    king_color = start_square.piece_color
+    move_piece unless finish_square.piece.downcase == "k"
+    !Check.new(king_color, board_to_fen, find_king(king_color).name).check?
   end
 
   def row(square)
@@ -62,5 +69,17 @@ class PieceMove
 
   def clear_path?
     raise "Called abstract method: clear_path?"
+  end
+
+  def move_piece
+    finish_square.piece = start_square.piece
+    finish_square.piece_color = start_square.piece_color
+    start_square.piece = "-"
+    start_square.piece_color = nil
+  end
+
+  def find_king(king_color)
+    king_square = gameboard.select { |square| square.piece.downcase == "k" && square.piece_color == king_color }
+    king_square.first
   end
 end

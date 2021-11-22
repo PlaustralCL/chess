@@ -88,4 +88,16 @@ describe KnightMove do
       end
     end
   end
+
+  describe "#safe_king?" do
+    context "knight move allows their king to be checked" do
+      it "returns false" do
+        allow_check = described_class.new("r1bqkbnr/ppp2ppp/2np4/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R")
+        allow_check.update_start_square("c6")
+        allow_check.update_finish_square("d4")
+        expect(allow_check.safe_king?).to eq(false)
+      end
+    end
+  end
+
 end

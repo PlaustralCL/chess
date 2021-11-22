@@ -27,4 +27,10 @@ class KingMove < PieceMove
     start_square.piece = "-"
     start_square.piece_color = nil
   end
+
+  # Overrides the inhierited method since it does the same thing as the clear_path
+  # mehdod for the king.
+  def safe_king?
+    true
+  end
 end

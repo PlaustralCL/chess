@@ -108,7 +108,7 @@ describe Check do
     # capture_checking_piece?
     context "the checking piece can be captured by an ally" do
       it "returns false" do
-        rook_check_bishop_capture = described_class.new("black", "5Rk1/6pp/3b4/8/8/8/8/3K4")
+        rook_check_bishop_capture = described_class.new("black", "5Rk1/6Pp/3b3P/8/8/8/8/3K4")
         expect(rook_check_bishop_capture.checkmate?).to eq(false)
       end
     end
@@ -173,7 +173,7 @@ describe Check do
 
     context "smothered mate" do
       it "returns true" do
-        smothered_mate = described_class.new("white", "8/8/8/8/8/8/5nPP/6RK")
+        smothered_mate = described_class.new("white", "6k1/8/8/8/8/8/5nPP/6RK")
         expect(smothered_mate.checkmate?).to eq(true)
       end
     end

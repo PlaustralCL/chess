@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "piece_move"
+require_relative "../check"
 
 # Validates that a requested rook move is allowed
 class RookMove < PieceMove
