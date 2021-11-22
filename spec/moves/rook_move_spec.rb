@@ -133,7 +133,7 @@ describe RookMove do
 
   describe "#valid_move?" do
     context "rook moving up and the path is not clear" do
-      g2_rook = described_class.new("8/8/8/8/6P1/8/6R1/8")
+      g2_rook = described_class.new("6k1/8/8/8/K5P1/8/6R1/8")
       start_name = "g2"
       finish_name = "g6"
       it "returns false" do
@@ -142,7 +142,7 @@ describe RookMove do
     end
 
     context "when rook moves vertically" do
-      basic_white_rook = described_class.new("8/8/1R4p1/8/8/8/1P6/8")
+      basic_white_rook = described_class.new("6k1/8/1R4p1/8/8/8/1P6/1K6")
       start_name = "b6"
       finish_name = "b4"
       it "returns true" do
