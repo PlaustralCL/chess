@@ -80,7 +80,7 @@ describe KingMove do
   end
 
   describe "clear_path?" do
-    bishop_board = described_class.new("8/2b5/8/8/4K3/8/8/8")
+    bishop_board = described_class.new("6k1/2b5/8/8/4K3/8/8/8")
 
     context "when king moves e4-e5, bishop blocks e5" do
       it "returns false" do
