@@ -19,10 +19,6 @@ class Board
     setup_board(position)
   end
 
-  def check?(color)
-    Check.new(board_to_fen).check?(color)
-  end
-
   def start_square_choices(player_color)
     possible_start_squares = ally_locations(player_color)
     possible_start_squares.select do |square_name|
