@@ -60,6 +60,10 @@ class String
   def bold
     colorize(37, 1)
   end
+
+  def bold_cyan_backgrouond
+    colorize(46, 1)
+  end
 end
 
 if $PROGRAM_NAME == __FILE__
