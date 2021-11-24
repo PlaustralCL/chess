@@ -149,5 +149,23 @@ describe RookMove do
         expect(basic_white_rook.valid_move?(start_name, finish_name)).to eq(true)
       end
     end
+
+    context "when the king is in check and the rook does not stop it" do
+      it "returns false" do
+        king_in_check = described_class.new("6k1/8/8/8/3b4/8/8/3R2K1")
+        start_name = "d1"
+        finish_name = "d2"
+        expect(king_in_check.valid_move?(start_name, finish_name)).to eq(false)
+      end
+    end
+
+    context "when the king is in check and the rook stops the check" do
+      it "returns true" do
+        king_in_check = described_class.new("6k1/8/8/8/3b4/8/8/3R2K1")
+        start_name = "d1"
+        finish_name = "d4"
+        expect(king_in_check.valid_move?(start_name, finish_name)).to eq(true)
+      end
+    end
   end
 end
