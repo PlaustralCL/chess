@@ -18,7 +18,7 @@ class Player
       input = verify_input(request_input("Please enter the start square"), available_choices)
       return input if input
 
-      puts "Input Error! Please choose a square with one of your pieces on it."
+      puts "Input Error! That square does not have a piece you can move."
     end
   end
 

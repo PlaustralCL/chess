@@ -25,11 +25,13 @@ describe Player do
   end
 
   describe "#input_start_square" do
+    error_message = "Input Error! That square does not have a piece you can move."
+
     context "when input is valid" do
       it "stops the loop and does not receive the error message" do
         valid_input = "g3"
         allow(new_player).to receive(:request_input).and_return(valid_input)
-        expect(new_player).not_to receive(:puts).with("Input Error! Please choose a square with one of your pieces on it.")
+        expect(new_player).not_to receive(:puts).with(error_message)
         new_player.input_start_square(available_choices)
       end
     end
@@ -38,7 +40,7 @@ describe Player do
       it "completes the loop and displays error message once" do
         valid_input = "g3"
         allow(new_player).to receive(:request_input).and_return(nil, valid_input)
-        expect(new_player).to receive(:puts).with("Input Error! Please choose a square with one of your pieces on it.").once
+        expect(new_player).to receive(:puts).with(error_message).once
         new_player.input_start_square(available_choices)
       end
     end
@@ -47,18 +49,19 @@ describe Player do
       it "completes the loop and displays error message once" do
         valid_input = "g3"
         allow(new_player).to receive(:request_input).and_return(nil, nil, valid_input)
-        expect(new_player).to receive(:puts).with("Input Error! Please choose a square with one of your pieces on it.").twice
+        expect(new_player).to receive(:puts).with(error_message).twice
         new_player.input_start_square(available_choices)
       end
     end
   end
 
   describe "#input_finish_square" do
+    error_message = "Input Error! That piece cannot move there."
     context "when input is valid" do
       it "stops the loop and does not receive the error message" do
         valid_input = "e1"
         allow(new_player).to receive(:request_input).and_return(valid_input)
-        expect(new_player).not_to receive(:puts).with("Input Error! That piece cannot move there.")
+        expect(new_player).not_to receive(:puts).with(error_message)
         new_player.input_finish_square(finish_choices)
       end
     end
@@ -67,7 +70,7 @@ describe Player do
       it "completes the loop and displays error message once" do
         valid_input = "e1"
         allow(new_player).to receive(:request_input).and_return(nil, valid_input)
-        expect(new_player).to receive(:puts).with("Input Error! That piece cannot move there.").once
+        expect(new_player).to receive(:puts).with(error_message).once
         new_player.input_finish_square(finish_choices)
       end
     end
@@ -76,7 +79,7 @@ describe Player do
       it "completes the loop and displays error message once" do
         valid_input = "e1"
         allow(new_player).to receive(:request_input).and_return(nil, nil, valid_input)
-        expect(new_player).to receive(:puts).with("Input Error! That piece cannot move there.").twice
+        expect(new_player).to receive(:puts).with(error_message).twice
         new_player.input_finish_square(finish_choices)
       end
     end
