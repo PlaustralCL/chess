@@ -15,7 +15,7 @@ class Player
 
   def input_start_square(available_choices)
     loop do
-      input = verify_input(request_input("Please enter the start square"), available_choices)
+      input = verify_input(request_input("#{name}, Please enter the start square"), available_choices)
       return input if input
 
       puts "Input Error! That square does not have a piece you can move."

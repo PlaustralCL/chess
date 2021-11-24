@@ -35,6 +35,21 @@ class Board
     choices.map(&:name)
   end
 
+  def move_piece(start_square_name, finish_square_name)
+    start_square = find_square(start_square_name)
+    finish_square = find_square(finish_square_name)
+    finish_square.piece = start_square.piece
+    finish_square.piece_color = start_square.piece_color
+    start_square.piece = "-"
+    start_square.piece_color = nil
+  end
+
+  def valid_move?(start_square_name, finish_square_name)
+    piece_name = find_square(start_square_name).piece
+    move_object = piece_to_move_object(piece_name)
+    move_object.valid_move?(start_square_name, finish_square_name)
+  end
+
   def ally_locations(player_color)
     gameboard.select { |square| square.piece_color == player_color }.map(&:name)
   end
