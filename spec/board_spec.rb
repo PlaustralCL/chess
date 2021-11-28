@@ -37,4 +37,18 @@ describe Board do
       end
     end
   end
+
+  describe "#valid_move?" do
+    context "when given an valid move" do
+      it "returns true" do
+        expect(new_board.valid_move?("g1", "f3")).to eq(true)
+      end
+    end
+
+    context "when given an invalid move" do
+      it "returns false" do
+        expect(new_board.valid_move?("a1", "f3")).to eq(false)
+      end
+    end
+  end
 end

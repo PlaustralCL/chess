@@ -12,7 +12,7 @@ class Board
   include BoardHelper
   include Moves
 
-  attr_reader :gameboard
+  attr_reader :gameboard, :current_player, :winner
 
   def initialize(position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
     @gameboard = Array.new(64) { Square.new }
