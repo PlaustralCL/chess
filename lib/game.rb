@@ -36,7 +36,8 @@ class Game
 
   # rubocop:todo Metrics/AbcSize
   def play_one_round
-    start_square_name = current_player.input_start_square(board.start_square_choices(current_player.color))
+    board.update_current_player(current_player)
+    start_square_name = current_player.input_start_square(board.start_square_choices)
     finish_square_name = current_player.input_finish_square(board.finish_square_choices(start_square_name))
     board.move_piece(start_square_name, finish_square_name) if board.valid_move?(start_square_name, finish_square_name)
     puts Display.new(board.board_to_fen).build_display
