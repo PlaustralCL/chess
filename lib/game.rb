@@ -21,36 +21,33 @@ class Game
     @player2 = player2
   end
 
+  # rubocop:todo Metrics/AbcSize
   def play_game
-    puts Display.new(board.board_to_fen).build_display
+    show_board
     @current_player = player1
+    board.update_current_player(current_player.color)
     until game_over?
       play_one_round
       @current_player = current_player == player1 ? player2 : player1
+      board.update_current_player(current_player.color)
     end
   end
+  # robocop: enable Metrics/AbcSize
 
   def game_over?
-    checkmate? || stalemate?
+    board.game_over?
   end
 
-  # rubocop:todo Metrics/AbcSize
   def play_one_round
-    board.update_current_player(current_player)
     start_square_name = current_player.input_start_square(board.start_square_choices)
     finish_square_name = current_player.input_finish_square(board.finish_square_choices(start_square_name))
     board.move_piece(start_square_name, finish_square_name) if board.valid_move?(start_square_name, finish_square_name)
+    show_board
+  end
+
+  def show_board
+    system("clear")
     puts Display.new(board.board_to_fen).build_display
   end
 
-  def checkmate?
-    position = board.board_to_fen
-    Check.new(current_player.color, position).checkmate?
-  end
-
-  def stalemate?
-    position = board.board_to_fen
-    Board.new(position).start_square_choices(current_player.color).empty? &&
-      !Check.new(current_player.color, position).check?
-  end
 end
