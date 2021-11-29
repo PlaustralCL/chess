@@ -12,7 +12,8 @@ module BoardHelper
   def setup_board(position)
     assign_square_names
     assign_square_coordinates
-    write_position(fen_to_array(position))
+    process_fen(position)
+    write_position(fen_to_array)
   end
 
   def assign_square_names
@@ -42,10 +43,15 @@ module BoardHelper
     row_numbers.product(col_numbers)
   end
 
-  def fen_to_array(position)
-    position.gsub("/", "")
-            .gsub(/\d/) { |num| ("-" * num.to_i) }
-            .chars
+  def process_fen(full_fen)
+    fen_keys = %i[piece_position side_to_move castling_ability ep_target_square halfmove_clock fullmove_clock]
+    @fen = fen_keys.zip(full_fen.split).to_h
+  end
+
+  def fen_to_array
+    fen[:piece_position].gsub("/", "")
+                        .gsub(/\d/) { |num| ("-" * num.to_i) }
+                        .chars
   end
 
   def write_position(position)
