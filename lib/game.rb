@@ -25,12 +25,13 @@ class Game
   def play_game
     show_board
     @current_player = player1
-    board.update_current_player(current_player.color)
+    update_player
     until game_over?
       play_one_round
       @current_player = current_player == player1 ? player2 : player1
-      board.update_current_player(current_player.color)
+      update_player
     end
+    final_message
   end
   # robocop: enable Metrics/AbcSize
 
@@ -45,9 +46,24 @@ class Game
     show_board
   end
 
+  def update_player
+    board.update_current_player(current_player.color)
+  end
+
   def show_board
     system("clear")
     puts Display.new(board.board_to_fen).build_display
+  end
+
+  def final_message
+    case board.winner
+    when "white"
+      puts "Checkmate! White won."
+    when "black"
+      puts "Checkmate! Black won."
+    when "stalemate"
+      puts "Stalemate! The game is a draw."
+    end
   end
 
 end
