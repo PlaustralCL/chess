@@ -7,7 +7,7 @@ require_relative "../board_helper"
 class PieceMove
   include BoardHelper
 
-  attr_reader :gameboard, :start_square, :finish_square
+  attr_reader :gameboard, :start_square, :finish_square, :fen
 
   def initialize(position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
     @gameboard = Array.new(64) { Square.new }

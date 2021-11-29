@@ -9,7 +9,7 @@ class Check
   include Moves
   include BoardHelper
 
-  attr_reader :gameboard, :king_color, :king_location
+  attr_reader :gameboard, :king_color, :king_location, :fen
 
   # The variable king_color is for the color of the king that may be in check/ checkmate.
   # For a KingMove, it would be the color of the king moving. At the end of a player's

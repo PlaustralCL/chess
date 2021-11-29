@@ -7,7 +7,7 @@ require_relative "color"
 class Display
   include BoardHelper
 
-  attr_reader :gameboard, :display_board
+  attr_reader :gameboard, :display_board, :fen
 
   def initialize(position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
     @gameboard = Array.new(64) { Square.new }

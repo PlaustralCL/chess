@@ -12,7 +12,7 @@ class Board
   include BoardHelper
   include Moves
 
-  attr_reader :gameboard, :current_player_color, :winner
+  attr_reader :gameboard, :current_player_color, :winner, :fen
 
   def initialize(position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
     @winner = ""
