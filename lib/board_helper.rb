@@ -81,10 +81,10 @@ module BoardHelper
   end
 
   def board_to_fen(board = gameboard)
-    piece_position = board.map(&:piece)
-    piece_position = piece_position.each_slice(8).to_a.map(&:join).join("/")
-    piece_position = piece_position.gsub(/-+/) { |dash| dash.length.to_s }
-    @fen[piece_position] = piece_position
+    position = board.map(&:piece)
+    position = position.each_slice(8).to_a.map(&:join).join("/")
+    position = position.gsub(/-+/) { |dash| dash.length.to_s }
+    @fen[:piece_position] = position
     fen_to_string
   end
 
