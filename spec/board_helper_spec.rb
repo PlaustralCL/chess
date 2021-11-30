@@ -67,4 +67,22 @@ describe Board do
       expect(actaul_piece_colors).to eq(expected_piece_colors)
     end
   end
+
+  describe "#process_fen" do
+    it "conversts basic position to FEN" do
+      kings_only = described_class.new("4k3/8/8/8/8/8/8/4K3")
+      position = "4k3/8/8/8/8/8/8/4K3 w - - 0 1"
+      fen_hash = { :castling_ability=>"-", :ep_target_square=>"-", :fullmove_clock=>"1", :halfmove_clock=>"0", :piece_position=>"4k3/8/8/8/8/8/8/4K3", :side_to_move=>"w" }
+      kings_only.process_fen(position)
+      expect(kings_only.fen).to eq(fen_hash)
+    end
+  end
+
+  describe "#board_to_fen" do
+    it "converts the gameboard array to FEN string" do
+      kings_only = described_class.new("4k3/8/8/8/8/8/8/4K3")
+      expected_fen = "4k3/8/8/8/8/8/8/4K3 w - - 0 1"
+      expect(kings_only.board_to_fen).to eq(expected_fen)
+    end
+  end
 end

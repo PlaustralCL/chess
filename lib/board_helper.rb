@@ -55,7 +55,7 @@ module BoardHelper
     @fen[:castling_ability] = "-" if fen[:castling_ability].nil?
     @fen[:ep_target_square] = "-" if fen[:ep_target_square].nil?
     @fen[:halfmove_clock] = 0 if fen[:halfmove_clock].nil?
-    @fen[:fullmove_clock] = 0 if fen[:fullmove_clock].nil?
+    @fen[:fullmove_clock] = 1 if fen[:fullmove_clock].nil?
   end
   # rubocop:enable Metrics/AbcSize
 
@@ -81,8 +81,14 @@ module BoardHelper
   end
 
   def board_to_fen(board = gameboard)
-    fen = board.map(&:piece)
-    fen = fen.each_slice(8).to_a.map(&:join).join("/")
-    fen.gsub(/-+/) { |dash| dash.length.to_s }
+    piece_position = board.map(&:piece)
+    piece_position = piece_position.each_slice(8).to_a.map(&:join).join("/")
+    piece_position = piece_position.gsub(/-+/) { |dash| dash.length.to_s }
+    @fen[piece_position] = piece_position
+    fen_to_string
+  end
+
+  def fen_to_string
+    [fen[:piece_position], fen[:side_to_move], fen[:castling_ability], fen[:ep_target_square], fen[:halfmove_clock], fen[:fullmove_clock]].join(" ")
   end
 end
