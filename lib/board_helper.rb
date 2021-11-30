@@ -46,7 +46,18 @@ module BoardHelper
   def process_fen(full_fen)
     fen_keys = %i[piece_position side_to_move castling_ability ep_target_square halfmove_clock fullmove_clock]
     @fen = fen_keys.zip(full_fen.split).to_h
+    fen_defaults
   end
+
+  # rubocop:todo Metrics/AbcSize
+  def fen_defaults
+    @fen[:side_to_move] = "w" if fen[:side_to_move].nil?
+    @fen[:castling_ability] = "-" if fen[:castling_ability].nil?
+    @fen[:ep_target_square] = "-" if fen[:ep_target_square].nil?
+    @fen[:halfmove_clock] = 0 if fen[:halfmove_clock].nil?
+    @fen[:fullmove_clock] = 0 if fen[:fullmove_clock].nil?
+  end
+  # rubocop:enable Metrics/AbcSize
 
   def fen_to_array
     fen[:piece_position].gsub("/", "")
