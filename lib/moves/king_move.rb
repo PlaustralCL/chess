@@ -6,6 +6,11 @@ require_relative "../check"
 # Validates that a requested king move is allowed
 class KingMove < PieceMove
   def basic_rules?
+    basic_move? || castling?
+  end
+
+  # A non-castling move
+  def basic_move?
     king_moves = [[-1, 0], [-1, 1], [0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1]]
     relative_position = [
       row(start_square) - row(finish_square),
@@ -14,7 +19,33 @@ class KingMove < PieceMove
     king_moves.include?(relative_position)
   end
 
-  # Only looks for pieces guarding/attacking the finish_square
+  def castling?
+    castling_rights?
+  end
+
+  def castling_rights?
+    case column(start_square) - column(finish_square)
+    when -2 # kingside castling
+      kingside_rights?
+    when 2 # queenside castling
+      queenside_rights?
+    else
+      false
+    end
+  end
+
+  def kingside_rights?
+    (fen[:side_to_move] == "w" && fen[:castling_ability].include?("K")) ||
+      (fen[:side_to_move] == "b" && fen[:castling_ability].include?("k"))
+  end
+
+  def queenside_rights?
+    (fen[:side_to_move] == "w" && fen[:castling_ability].include?("Q")) ||
+      (fen[:side_to_move] == "b" && fen[:castling_ability].include?("q"))
+  end
+
+
+
   def clear_path?
     king_color = start_square.piece_color
     move_king
