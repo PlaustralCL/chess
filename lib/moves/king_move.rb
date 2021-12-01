@@ -23,6 +23,21 @@ class KingMove < PieceMove
     castling_rights?
   end
 
+  def clear_path?
+    true
+  end
+
+  # Overrides the inhierited method since the generic method seems to cause problems
+  def safe_king?
+    king_color = start_square.piece_color
+    move_king
+    !Check.new(king_color, board_to_fen, finish_square.name).check?
+  end
+
+  ########################################
+  ### Not part of the public interface ###
+  ########################################
+
   def castling_rights?
     case column(start_square) - column(finish_square)
     when -2 # kingside castling
@@ -44,24 +59,10 @@ class KingMove < PieceMove
       (fen[:side_to_move] == "b" && fen[:castling_ability].include?("q"))
   end
 
-
-
-  def clear_path?
-    true
-  end
-
   def move_king
     finish_square.piece = start_square.piece
     finish_square.piece_color = start_square.piece_color
     start_square.piece = "-"
     start_square.piece_color = nil
-  end
-
-  # Overrides the inhierited method since it does the same thing as the clear_path
-  # mehdod for the king.
-  def safe_king?
-    king_color = start_square.piece_color
-    move_king
-    !Check.new(king_color, board_to_fen, finish_square.name).check?
   end
 end
