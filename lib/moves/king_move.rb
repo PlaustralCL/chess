@@ -47,9 +47,7 @@ class KingMove < PieceMove
 
 
   def clear_path?
-    king_color = start_square.piece_color
-    move_king
-    !Check.new(king_color, board_to_fen, finish_square.name).check?
+    true
   end
 
   def move_king
@@ -62,6 +60,8 @@ class KingMove < PieceMove
   # Overrides the inhierited method since it does the same thing as the clear_path
   # mehdod for the king.
   def safe_king?
-    true
+    king_color = start_square.piece_color
+    move_king
+    !Check.new(king_color, board_to_fen, finish_square.name).check?
   end
 end
