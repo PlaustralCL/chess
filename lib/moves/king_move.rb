@@ -38,8 +38,9 @@ class KingMove < PieceMove
   def safe_king?(final_square = finish_square)
     position = fen[:piece_position]
     # binding.pry
+    king_color = start_square.piece_color
     move_king(final_square)
-    safety = !Check.new(start_square.piece_color, board_to_fen, final_square.name).check?
+    safety = !Check.new(king_color, board_to_fen, final_square.name).check?
     setup_board(position)
     safety
   end
