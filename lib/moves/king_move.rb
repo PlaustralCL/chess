@@ -36,9 +36,12 @@ class KingMove < PieceMove
 
   # Overrides the inhierited method since the generic method seems to cause problems
   def safe_king?(final_square = finish_square)
-    king_color = start_square.piece_color
+    position = fen[:piece_position]
+    # binding.pry
     move_king(final_square)
-    !Check.new(king_color, board_to_fen, final_square.name).check?
+    safety = !Check.new(start_square.piece_color, board_to_fen, final_square.name).check?
+    setup_board(position)
+    safety
   end
 
   ########################################
@@ -90,8 +93,18 @@ class KingMove < PieceMove
     target_row[target_index(target_row, start_square) + 1..target_index(target_row, finish_square) + 1].map
   end
 
-  def no_check_in_path?
+  def safe_castling?
+    !Check.new(start_square.piece_color, board_to_fen).check? &&
+      safe_king?(middle_square) &&
+      # binding.pry
+      safe_king?(finish_square)
+  end
 
+  def middle_square
+    paths = [find_rank]
+    target_row = paths.select { |row| row.length >= 1 }.flatten
+    target_row = target_row.reverse if negative_movement?(target_row)
+    target_row[target_index(target_row, start_square) + 1]
   end
 
   def move_king(final_square = finish_square)
@@ -99,7 +112,5 @@ class KingMove < PieceMove
     final_square.piece_color = start_square.piece_color
     start_square.piece = "-"
     start_square.piece_color = nil
-    # restore original positon so future tests (castling) won't be impacted
-    setup_board(board_to_fen)
   end
 end

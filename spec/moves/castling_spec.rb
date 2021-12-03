@@ -63,4 +63,42 @@ describe KingMove do
       end
     end
   end
+
+  describe "#safe_castling?" do
+    context "when no checks" do
+      xit "returns true" do
+        no_check = described_class.new("r1bqkbnr/ppp2ppp/2np4/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 0 4")
+        no_check.update_start_square("e1")
+        no_check.update_finish_square("g1")
+        expect(no_check.safe_castling?).to eq(true)
+      end
+    end
+
+    context "when starting square checked" do
+      xit "returns false" do
+        starting_check = described_class.new("r1bqk1nr/ppp2ppp/2n5/1B1pp3/1b2P3/3P1N1P/PPP2PP1/RNBQK2R w KQkq - 1 6")
+        starting_check.update_start_square("e1")
+        starting_check.update_finish_square("g1")
+        expect(starting_check.safe_castling?).to eq(false)
+      end
+    end
+
+    context "when middle square checked" do
+      xit "returns false" do
+        middle_check = described_class.new("rnbqk2r/pppp1p1p/5npB/2b1p3/4P3/P1NP4/1PP2PPP/R2QKBNR b KQkq - 0 5")
+        middle_check.update_start_square("e8")
+        middle_check.update_finish_square("g8")
+        expect(middle_check.safe_castling?).to eq(false)
+      end
+    end
+
+    context "when finish square checked" do
+      it "returns false" do
+        finish_check = described_class.new("r3kb1r/pppb1ppp/2np1n2/4p1q1/3PP3/1PN2Q2/PBP2PPP/R3KBNR w KQkq - 3 7")
+        finish_check.update_start_square("e1")
+        finish_check.update_finish_square("c1")
+        expect(finish_check.safe_castling?).to eq(false)
+      end
+    end
+  end
 end
