@@ -37,7 +37,6 @@ class KingMove < PieceMove
   # Overrides the inhierited method since the generic method seems to cause problems
   def safe_king?(final_square = finish_square)
     position = fen[:piece_position]
-    # binding.pry
     king_color = start_square.piece_color
     move_king(final_square)
     safety = !Check.new(king_color, board_to_fen, final_square.name).check?
@@ -97,7 +96,6 @@ class KingMove < PieceMove
   def safe_castling?
     !Check.new(start_square.piece_color, board_to_fen).check? &&
       safe_king?(middle_square) &&
-      # binding.pry
       safe_king?(finish_square)
   end
 
