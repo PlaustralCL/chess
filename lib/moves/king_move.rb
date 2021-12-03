@@ -10,7 +10,7 @@ class KingMove < PieceMove
   include Path
 
   def basic_rules?
-    basic_move? || castling?
+    basic_move?
   end
 
   # A non-castling move
@@ -27,7 +27,7 @@ class KingMove < PieceMove
     return false unless row(start_square) == row(finish_square)
     return false unless (column(start_square) - column(finish_square)).abs == 2
 
-    castling_rights? && castling_path_clear?
+    castling_rights? && castling_path_clear? && no_check_in_path?
   end
 
   def clear_path?
@@ -35,10 +35,10 @@ class KingMove < PieceMove
   end
 
   # Overrides the inhierited method since the generic method seems to cause problems
-  def safe_king?
+  def safe_king?(final_square = finish_square)
     king_color = start_square.piece_color
-    move_king
-    !Check.new(king_color, board_to_fen, finish_square.name).check?
+    move_king(final_square)
+    !Check.new(king_color, board_to_fen, final_square.name).check?
   end
 
   ########################################
@@ -90,9 +90,13 @@ class KingMove < PieceMove
     target_row[target_index(target_row, start_square) + 1..target_index(target_row, finish_square) + 1].map
   end
 
-  def move_king
-    finish_square.piece = start_square.piece
-    finish_square.piece_color = start_square.piece_color
+  def no_check_in_path?
+
+  end
+
+  def move_king(final_square = finish_square)
+    final_square.piece = start_square.piece
+    final_square.piece_color = start_square.piece_color
     start_square.piece = "-"
     start_square.piece_color = nil
     # restore original positon so future tests (castling) won't be impacted
