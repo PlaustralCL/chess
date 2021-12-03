@@ -1,10 +1,14 @@
 # frozen_string_literal: true
 
+require "pry"
 require_relative "piece_move"
 require_relative "../check"
+require_relative "path"
 
 # Validates that a requested king move is allowed
 class KingMove < PieceMove
+  include Path
+
   def basic_rules?
     basic_move? || castling?
   end
@@ -20,7 +24,10 @@ class KingMove < PieceMove
   end
 
   def castling?
-    castling_rights?
+    return false unless row(start_square) == row(finish_square)
+    return false unless (column(start_square) - column(finish_square)).abs == 2
+
+    castling_rights? && castling_path_clear?
   end
 
   def clear_path?
@@ -57,6 +64,30 @@ class KingMove < PieceMove
   def queenside_rights?
     (fen[:side_to_move] == "w" && fen[:castling_ability].include?("Q")) ||
       (fen[:side_to_move] == "b" && fen[:castling_ability].include?("q"))
+  end
+
+  def castling_path_clear?
+    paths = [find_rank]
+    target_row = paths.select { |row| row.length >= 1 }.flatten
+    target_row = target_row.reverse if negative_movement?(target_row)
+    final_path = find_path(target_row).to_a
+    final_path.map(&:piece).all?("-")
+  end
+
+  def find_path(target_row)
+    if column(start_square) - column(finish_square) == -2
+      kingside_path(target_row)
+    else
+      queenside_path(target_row)
+    end
+  end
+
+  def kingside_path(target_row)
+    target_row[target_index(target_row, start_square) + 1..target_index(target_row, finish_square)].map
+  end
+
+  def queenside_path(target_row)
+    target_row[target_index(target_row, start_square) + 1..target_index(target_row, finish_square) + 1].map
   end
 
   def move_king

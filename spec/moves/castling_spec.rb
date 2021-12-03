@@ -4,23 +4,63 @@ require_relative "../../lib/moves/king_move"
 
 # Tests specifically for castling with the KingMove class
 describe KingMove do
-  describe "#castling?" do
+  describe "#castling_rights?" do
+    # castling_rights?
     context "when black has queenside castling" do
       it "returns true" do
         black_queenside = described_class.new("r3k1nr/pppb1ppp/2np1q2/1Bb1p3/4P3/2N2N2/PPPP1PPP/R1BQK2R b KQq - 0 1")
         black_queenside.update_start_square("e8")
         black_queenside.update_finish_square("c8")
-        expect(black_queenside.castling?).to eq(true)
+        expect(black_queenside.castling_rights?).to eq(true)
       end
     end
+
     context "when white has lost kingside castling" do
       it "returns false" do
         white_kingside = described_class.new("r3k1nr/pppb1ppp/2np1q2/1Bb1p3/4P3/2N2N2/PPPP1PPP/R1BQK2R w Qkq - 0 1")
         white_kingside.update_start_square("e1")
         white_kingside.update_finish_square("g1")
-        expect(white_kingside.castling?).to eq(false)
+        expect(white_kingside.castling_rights?).to eq(false)
+      end
+    end
+  end
+
+  describe "#castling_path_clear?" do
+    context "When the path is not clear for white" do
+      it "returns false" do
+        white_not_clear = described_class.new("rnbqkbnr/ppp2ppp/3p4/4p3/2B1P3/8/PPPP1PPP/RNBQK1NR w KQkq - 0 3")
+        white_not_clear.update_start_square("e1")
+        white_not_clear.update_finish_square("g1")
+        expect(white_not_clear.castling_path_clear?).to eq(false)
       end
     end
 
+    context "when the path is not clear for black" do
+      it "returns false" do
+        black_not_clear = described_class.new("rn2kbnr/pppbqppp/3p4/4p3/2B1P3/2N2N2/PPPP1PPP/R1BQ1RK1 b kq - 5 5")
+        black_not_clear.update_start_square("e8")
+        black_not_clear.update_finish_square("c8")
+        expect(black_not_clear.castling_path_clear?).to eq(false)
+
+      end
+    end
+
+    context "when the path is clear for queenside" do
+      it "returns true" do
+        queenside_clear = described_class.new("r3kbnr/ppp1qppp/2np4/1B2p3/4P1b1/2NP1N2/PPP2PPP/R1BQ1RK1 b kq - 0 6")
+        queenside_clear.update_start_square("e8")
+        queenside_clear.update_finish_square("c8")
+        expect(queenside_clear.castling_path_clear?).to eq(true)
+      end
+    end
+
+    context "when the path is clear for kingside" do
+      it "returns true" do
+        kingside_clear = described_class.new("r1bqkbnr/ppp2ppp/2np4/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 0 4")
+        kingside_clear.update_start_square("e1")
+        kingside_clear.update_finish_square("g1")
+        expect(kingside_clear.castling_path_clear?).to eq(true)
+      end
+    end
   end
 end
