@@ -95,5 +95,7 @@ class KingMove < PieceMove
     finish_square.piece_color = start_square.piece_color
     start_square.piece = "-"
     start_square.piece_color = nil
+    # restore original positon so future tests (castling) won't be impacted
+    setup_board(board_to_fen)
   end
 end
