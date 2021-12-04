@@ -13,7 +13,7 @@ class Board
   include BoardHelper
   include Moves
 
-  attr_reader :gameboard, :current_player_color, :winner, :fen
+  attr_reader :gameboard, :winner, :fen
 
   def initialize(position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
     @winner = ""
@@ -22,7 +22,11 @@ class Board
   end
 
   def update_current_player(player_color)
-    @current_player_color = player_color
+    fen[:side_to_move] = player_color == "white" ? "w" : "b"
+  end
+
+  def current_player_color
+    fen[:side_to_move] == "w" ? "white" : "black"
   end
 
   def start_square_choices
