@@ -13,7 +13,7 @@ class Board
   include BoardHelper
   include Moves
 
-  attr_reader :gameboard, :winner, :fen
+  attr_reader :gameboard, :winner, :fen, :start_square, :finish_square
 
   def initialize(position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
     @winner = ""
@@ -46,57 +46,61 @@ class Board
   end
 
   def move_piece(start_square_name, finish_square_name)
-    start_square = find_square(start_square_name)
-    finish_square = find_square(finish_square_name)
+    @start_square = find_square(start_square_name)
+    @finish_square = find_square(finish_square_name)
     case start_square.piece.downcase
     when "k"
-      move_king(start_square, finish_square)
+      move_king
     else
-      basic_move(start_square, finish_square)
+      basic_move
     end
     board_to_fen
   end
 
-  def basic_move(start_square, finish_square)
-    finish_square.piece = start_square.piece
-    finish_square.piece_color = start_square.piece_color
-    start_square.piece = "-"
-    start_square.piece_color = nil
+  def basic_move(start = start_square, finish = finish_square)
+    finish.piece = start.piece
+    finish.piece_color = start.piece_color
+    start.piece = "-"
+    start.piece_color = nil
   end
 
-  def move_king(start_square, finish_square)
-    if (start_square.coordinates.first == finish_square.coordinates.first) &&
-       ((start_square.coordinates.last - finish_square.coordinates.last).abs == 2)
-      castle_king(start_square, finish_square)
+  def move_king
+    if castling?
+      castle_king
     else
-      basic_move(start_square, finish_square)
+      basic_move
     end
   end
 
-  def castle_king(start_square, finish_square)
+  def castling?
+    (start_square.coordinates.first == finish_square.coordinates.first) &&
+      ((start_square.coordinates.last - finish_square.coordinates.last).abs == 2)
+  end
+
+  def castle_king
     if finish_square.coordinates.last == 6 # kingside castling
-      kingside_castling(start_square, finish_square)
+      kingside_castling
     else # queenside castling
-      queenside_castling(start_square, finish_square)
+      queenside_castling
     end
   end
 
-  def kingside_castling(start_square, finish_square)
+  def kingside_castling
     if start_square.piece_color == "white"
       basic_move(find_square("h1"), find_square("f1"))
     else
       basic_move(find_square("h8"), find_square("f8"))
     end
-    basic_move(start_square, finish_square)
+    basic_move
   end
 
-  def queenside_castling(start_square, finish_square)
+  def queenside_castling
     if start_square.piece_color == "white"
       basic_move(find_square("a1"), find_square("d1"))
     else
       basic_move(find_square("a8"), find_square("d8"))
     end
-    basic_move(start_square, finish_square)
+    basic_move
   end
 
   def valid_move?(start_square_name, finish_square_name)
