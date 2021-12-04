@@ -8,6 +8,7 @@ require_relative "moves"
 # Holds the frameword of the board in a 64 element board. The board can be
 # sliced into an 8 x 8 matrix when needed. Each element of the array will be
 # a Struct that maintains information about each square.
+# rubocop:todo Metrics/ClassLength
 class Board
   include BoardHelper
   include Moves
@@ -43,10 +44,55 @@ class Board
   def move_piece(start_square_name, finish_square_name)
     start_square = find_square(start_square_name)
     finish_square = find_square(finish_square_name)
+    case start_square.piece.downcase
+    when "k"
+      move_king(start_square, finish_square)
+    else
+      basic_move(start_square, finish_square)
+    end
+    board_to_fen
+  end
+
+  def basic_move(start_square, finish_square)
     finish_square.piece = start_square.piece
     finish_square.piece_color = start_square.piece_color
     start_square.piece = "-"
     start_square.piece_color = nil
+  end
+
+  def move_king(start_square, finish_square)
+    if (start_square.coordinates.first == finish_square.coordinates.first) &&
+       ((start_square.coordinates.last - finish_square.coordinates.last).abs == 2)
+      castle_king(start_square, finish_square)
+    else
+      basic_move(start_square, finish_square)
+    end
+  end
+
+  def castle_king(start_square, finish_square)
+    if finish_square.coordinates.last == 6 # kingside castling
+      kingside_castling(start_square, finish_square)
+    else # queenside castling
+      queenside_castling(start_square, finish_square)
+    end
+  end
+
+  def kingside_castling(start_square, finish_square)
+    if start_square.piece_color == "white"
+      basic_move(find_square("h1"), find_square("f1"))
+    else
+      basic_move(find_square("h8"), find_square("f8"))
+    end
+    basic_move(start_square, finish_square)
+  end
+
+  def queenside_castling(start_square, finish_square)
+    if start_square.piece_color == "white"
+      basic_move(find_square("a1"), find_square("d1"))
+    else
+      basic_move(find_square("a8"), find_square("d8"))
+    end
+    basic_move(start_square, finish_square)
   end
 
   def valid_move?(start_square_name, finish_square_name)

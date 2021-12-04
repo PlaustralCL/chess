@@ -114,8 +114,47 @@ describe Board do
 
       end
     end
+  end
 
+  describe "#move_piece" do
+    context "when a queen moves" do
+      it "updates the board to show the new position" do
+        queen_move = described_class.new("r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 3 3")
+        queen_move.move_piece("d1", "e2")
+        expect(queen_move.fen[:piece_position]).to eq("r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPPQPPP/RNB1K2R")
+      end
+    end
 
+    context "when a knigt moves" do
+      it "updates the board to show the new position" do
+        knight_move = described_class.new("r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 3 3")
+        knight_move.move_piece("b1", "c3")
+        expect(knight_move.fen[:piece_position]).to eq("r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/2N2N2/PPPP1PPP/R1BQK2R")
+      end
+    end
 
+    context "when a king moves one square" do
+      it "updates the board to show the new position" do
+        king_move = described_class.new("r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 3 3")
+        king_move.move_piece("e1", "f1")
+        expect(king_move.fen[:piece_position]).to eq("r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQ1K1R")
+      end
+    end
+
+    context "when a king castles kingside" do
+      it "updates the board to move the king and kingside rook" do
+        king_move = described_class.new("r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 3 3")
+        king_move.move_piece("e1", "g1")
+        expect(king_move.fen[:piece_position]).to eq("r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQ1RK1")
+      end
+    end
+
+    context "when a king castles queenside" do
+      it "updates the board to move the king and queenside rook" do
+        king_move = described_class.new("r3kbnr/pppbqppp/2np4/4p3/2B1P3/5N2/PPPP1PPP/RNBQ1RK1 b Qkq - 3 3")
+        king_move.move_piece("e8", "c8")
+        expect(king_move.fen[:piece_position]).to eq("2kr1bnr/pppbqppp/2np4/4p3/2B1P3/5N2/PPPP1PPP/RNBQ1RK1")
+      end
+    end
   end
 end
