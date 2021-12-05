@@ -70,7 +70,19 @@ class Board
     else
       basic_move
     end
+    update_castling_ability
   end
+
+  # rubocop:disable Metrics/AbcSize
+  def update_castling_ability
+    fen[:castling_ability] = if fen[:side_to_move] == "w"
+                               (fen[:castling_ability].chars - %w[K Q]).join
+                             else
+                               (fen[:castling_ability].chars - %w[k q]).join
+                             end
+    fen[:castling_ability] = "-" if fen[:castling_ability].empty?
+  end
+  # rubocop:enable Metrics/AbcSize
 
   def castling?
     (start_square.coordinates.first == finish_square.coordinates.first) &&
