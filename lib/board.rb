@@ -45,17 +45,22 @@ class Board
     choices.map(&:name)
   end
 
+  # rubocop:disable Metrics/MethodLength
   def move_piece(start_square_name, finish_square_name)
     @start_square = find_square(start_square_name)
     @finish_square = find_square(finish_square_name)
     case start_square.piece.downcase
     when "k"
       move_king
+    when "r"
+      update_rook_castling
+      basic_move
     else
       basic_move
     end
     board_to_fen
   end
+  # rubocop:enable Metrics/MethodLength
 
   def basic_move(start = start_square, finish = finish_square)
     finish.piece = start.piece
@@ -70,19 +75,38 @@ class Board
     else
       basic_move
     end
-    update_castling_ability
+    update_king_castling
   end
 
-  # rubocop:disable Metrics/AbcSize
-  def update_castling_ability
-    fen[:castling_ability] = if fen[:side_to_move] == "w"
-                               (fen[:castling_ability].chars - %w[K Q]).join
-                             else
-                               (fen[:castling_ability].chars - %w[k q]).join
-                             end
+  def update_king_castling
+    fen_castling = fen[:castling_ability].chars
+    fen[:castling_ability] =
+      if fen[:side_to_move] == "w"
+        (fen_castling - %w[K Q]).join
+      else
+        (fen_castling - %w[k q]).join
+      end
+    fen[:castling_ability] = "-" if fen[:castling_ability].empty?
+  end
+
+  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+  def update_rook_castling
+    fen_castling = fen[:castling_ability].chars
+    fen[:castling_ability] =
+      case start_square.name
+      when "h1"
+        (fen_castling - ["K"]).join
+      when "a1"
+        (fen_castling - ["Q"]).join
+      when "h8"
+        (fen_castling - ["k"]).join
+      when "a8"
+        (fen_castling - ["q"]).join
+      end
     fen[:castling_ability] = "-" if fen[:castling_ability].empty?
   end
   # rubocop:enable Metrics/AbcSize
+  # rubocop: enable Metrics/MethodLength
 
   def castling?
     (start_square.coordinates.first == finish_square.coordinates.first) &&

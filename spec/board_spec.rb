@@ -196,5 +196,21 @@ describe Board do
         expect(king_move.fen[:castling_ability]).to eq("-")
       end
     end
+
+    context "when a rook moves" do
+      it "updates the board" do
+        rook_move = described_class.new("r3kbnr/pppqpppp/2n5/3p1b2/2PP4/2N1PN2/PP3PPP/R1BQKB1R b KQkq - 0 5")
+        rook_move.move_piece("a8", "d8")
+        expect(rook_move.fen[:piece_position]).to eq("3rkbnr/pppqpppp/2n5/3p1b2/2PP4/2N1PN2/PP3PPP/R1BQKB1R")
+      end
+    end
+
+    context "when the black queenside rook moves" do
+      it "removes queenside castling" do
+        rook_move = described_class.new("r3kbnr/pppqpppp/2n5/3p1b2/2PP4/2N1PN2/PP3PPP/R1BQKB1R b KQkq - 0 5")
+        rook_move.move_piece("a8", "d8")
+        expect(rook_move.fen[:castling_ability]).to eq("KQk")
+      end
+    end
   end
 end
