@@ -4,14 +4,15 @@ require "pry"
 require_relative "board_helper"
 require_relative "check"
 require_relative "moves"
+require_relative "board_update_castling"
 
 # Holds the frameword of the board in a 64 element board. The board can be
 # sliced into an 8 x 8 matrix when needed. Each element of the array will be
 # a Struct that maintains information about each square.
-# rubocop:todo Metrics/ClassLength
 class Board
   include BoardHelper
   include Moves
+  include BoardUpdateCastling
 
   attr_reader :gameboard, :winner, :fen, :start_square, :finish_square
 
@@ -68,76 +69,6 @@ class Board
     finish.piece_color = start.piece_color
     start.piece = "-"
     start.piece_color = nil
-  end
-
-  def move_king
-    if castling?
-      castle_king
-    else
-      basic_move
-    end
-    update_king_castling
-  end
-
-  def update_king_castling
-    fen_castling = fen[:castling_ability].chars
-    fen[:castling_ability] =
-      if fen[:side_to_move] == "w"
-        (fen_castling - %w[K Q]).join
-      else
-        (fen_castling - %w[k q]).join
-      end
-    fen[:castling_ability] = "-" if fen[:castling_ability].empty?
-  end
-
-  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
-  def update_rook_castling(rook_square = start_square)
-    fen_castling = fen[:castling_ability].chars
-    fen[:castling_ability] =
-      case rook_square.name
-      when "h1"
-        (fen_castling - ["K"]).join
-      when "a1"
-        (fen_castling - ["Q"]).join
-      when "h8"
-        (fen_castling - ["k"]).join
-      when "a8"
-        (fen_castling - ["q"]).join
-      end
-    fen[:castling_ability] = "-" if fen[:castling_ability].empty?
-  end
-  # rubocop:enable Metrics/AbcSize
-  # rubocop: enable Metrics/MethodLength
-
-  def castling?
-    (start_square.coordinates.first == finish_square.coordinates.first) &&
-      ((start_square.coordinates.last - finish_square.coordinates.last).abs == 2)
-  end
-
-  def castle_king
-    if finish_square.coordinates.last == 6 # kingside castling
-      kingside_castling
-    else # queenside castling
-      queenside_castling
-    end
-  end
-
-  def kingside_castling
-    if start_square.piece_color == "white"
-      basic_move(find_square("h1"), find_square("f1"))
-    else
-      basic_move(find_square("h8"), find_square("f8"))
-    end
-    basic_move
-  end
-
-  def queenside_castling
-    if start_square.piece_color == "white"
-      basic_move(find_square("a1"), find_square("d1"))
-    else
-      basic_move(find_square("a8"), find_square("d8"))
-    end
-    basic_move
   end
 
   def valid_move?(start_square_name, finish_square_name)
