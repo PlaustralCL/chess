@@ -134,4 +134,26 @@ describe KingMove do
       end
     end
   end
+
+  describe "#special_move?" do
+    context "when castling is allowed" do
+      it "returns true" do
+        castling_allowed = described_class.new("r1bqk1nr/pppp1ppp/2n5/2b1p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4")
+        castling_allowed.update_start_square("e1")
+        castling_allowed.update_finish_square("g1")
+        expect(castling_allowed.basic_rules?).to eq(true)
+      end
+    end
+  end
+
+  describe "#valid_move?" do
+    context "when castling is allowed" do
+      it "returns true" do
+        castling_allowed = described_class.new("r1bqk1nr/pppp1ppp/2n5/2b1p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4")
+        start_name = "e1"
+        finish_name = "g1"
+        expect(castling_allowed.valid_move?(start_name, finish_name)).to eq(true)
+      end
+    end
+  end
 end

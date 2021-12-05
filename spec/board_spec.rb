@@ -39,6 +39,14 @@ describe Board do
         expect(actual_piece_locations).to contain_exactly("c4", "d5", "f7")
       end
     end
+
+    context "when kingside castling is allowed for white" do
+      it "allows f1 as a finish square" do
+        basic_castling = described_class.new("4k3/8/8/8/8/8/8/4K2R w K - 0 1")
+        actual_piece_locations = basic_castling.finish_square_choices("e1")
+        expect(actual_piece_locations).to contain_exactly("d1", "d2", "e2", "f2", "f1", "g1")
+      end
+    end
   end
 
   describe "#valid_move?" do

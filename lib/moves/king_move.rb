@@ -10,7 +10,7 @@ class KingMove < PieceMove
   include Path
 
   def basic_rules?
-    basic_move?
+    basic_move? || castling?
   end
 
   # A non-castling move
@@ -21,13 +21,6 @@ class KingMove < PieceMove
       column(start_square) - column(finish_square)
     ]
     king_moves.include?(relative_position)
-  end
-
-  def castling?
-    return false unless row(start_square) == row(finish_square)
-    return false unless (column(start_square) - column(finish_square)).abs == 2
-
-    castling_rights? && castling_path_clear? && no_check_in_path?
   end
 
   def clear_path?
@@ -47,6 +40,13 @@ class KingMove < PieceMove
   ########################################
   ### Not part of the public interface ###
   ########################################
+
+  def castling?
+    return false unless row(start_square) == row(finish_square)
+    return false unless (column(start_square) - column(finish_square)).abs == 2
+
+    castling_rights? && castling_path_clear? && safe_castling?
+  end
 
   def castling_rights?
     case column(start_square) - column(finish_square)

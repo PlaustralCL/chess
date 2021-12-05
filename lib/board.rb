@@ -15,7 +15,7 @@ class Board
 
   attr_reader :gameboard, :winner, :fen, :start_square, :finish_square
 
-  def initialize(position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
+  def initialize(position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
     @winner = ""
     @gameboard = Array.new(64) { Square.new }
     setup_board(position)
