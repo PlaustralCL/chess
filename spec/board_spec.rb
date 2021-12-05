@@ -212,5 +212,21 @@ describe Board do
         expect(rook_move.fen[:castling_ability]).to eq("KQk")
       end
     end
+
+    context "when a rook is captured on it starting square" do
+      it "removes the associated castling ability" do
+        rook_capture = described_class.new("r1bqk2r/p1ppnp1p/1pn1p1p1/8/1P2P3/1P6/1BPP1PPP/RN1QKBNR w KQkq - 0 1")
+        rook_capture.move_piece("b2", "h8")
+        expect(rook_capture.fen[:castling_ability]).to eq("KQq")
+      end
+    end
+
+    context "when a rook is captured on it starting square" do
+      it "removes the associated castling ability" do
+        rook_capture = described_class.new("r1bqk3/p1ppnp1p/1pn1p1p1/8/1P2P3/1P6/1BPP1PPP/RN1QKBNR w KQq - 0 1")
+        rook_capture.move_piece("b2", "h8")
+        expect(rook_capture.fen[:castling_ability]).to eq("KQq")
+      end
+    end
   end
 end

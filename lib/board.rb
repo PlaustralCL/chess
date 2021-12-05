@@ -58,7 +58,8 @@ class Board
     else
       basic_move
     end
-    board_to_fen
+    update_rook_castling(finish_square) if %w[a1 h1 a8 h8].include?(finish_square.name)
+    board_to_fen # updates fen[:piece_position]
   end
   # rubocop:enable Metrics/MethodLength
 
@@ -90,10 +91,10 @@ class Board
   end
 
   # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
-  def update_rook_castling
+  def update_rook_castling(rook_square = start_square)
     fen_castling = fen[:castling_ability].chars
     fen[:castling_ability] =
-      case start_square.name
+      case rook_square.name
       when "h1"
         (fen_castling - ["K"]).join
       when "a1"
