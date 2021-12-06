@@ -120,6 +120,16 @@ describe BlackPawnMove do
         expect(basic_board.basic_rules?).to eq(false)
       end
     end
+
+    # en passant
+    context "when en passant is allowed for black" do
+      it "returns true" do
+        ep_allowed = described_class.new("rnbqkbnr/ppp2ppp/8/3p4/3PpP2/2P5/PP2P1PP/RNBQKBNR b KQkq f3 0 1")
+        ep_allowed.update_start_square("e4")
+        ep_allowed.update_finish_square("f3")
+        expect(ep_allowed.basic_rules?).to eq(true)
+      end
+    end
   end
 
   describe "#clear_path?" do
@@ -178,6 +188,26 @@ describe BlackPawnMove do
       it "returns true" do
         pinned_bishop = described_class.new("5k2/8/5p2/4P3/8/8/8/6K1")
         expect(pinned_bishop.valid_move?("f6", "e5")).to eq(true)
+      end
+    end
+  end
+
+  describe "#en_passant?" do
+    context "when en passant is allowed for black" do
+      it "returns true" do
+        ep_allowed = described_class.new("rnbqkbnr/ppp2ppp/8/3p4/3PpP2/2P5/PP2P1PP/RNBQKBNR b KQkq f3 0 1")
+        ep_allowed.update_start_square("e4")
+        ep_allowed.update_finish_square("f3")
+        expect(ep_allowed.en_passant?).to eq(true)
+      end
+    end
+
+    context "when en passant is not allowed" do
+      it "returns false" do
+        ep_not_allowed = described_class.new("rnbqkbnr/1pp2ppp/p7/3p4/3PpP2/2P5/PP2P1PP/RNBQKBNR b KQkq - 0 2")
+        ep_not_allowed.update_start_square("e4")
+        ep_not_allowed.update_finish_square("f3")
+        expect(ep_not_allowed.en_passant?).to eq(false)
       end
     end
   end
