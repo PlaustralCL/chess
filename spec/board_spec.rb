@@ -228,5 +228,86 @@ describe Board do
         expect(rook_capture.fen[:castling_ability]).to eq("KQq")
       end
     end
+
+    # en passant/ pawn move testing
+    context "when a pawn moves one square" do
+      it "updates the board correctly" do
+        basic_pawn_move = described_class.new("rnbqkbnr/ppp2ppp/8/3p4/3Pp3/2P5/PP2PPPP/RNBQKBNR w KQkq - 0 1")
+        basic_pawn_move.move_piece("a1", "a2")
+        expect(basic_pawn_move.fen[:piece_position]).to eq("rnbqkbnr/ppp2ppp/8/3p4/3Pp3/P1P5/1P2PPPP/RNBQKBNR b KQkq - 0 1")
+      end
+    end
+
+    context "when a pawn moves one square" do
+      it "the ep_target_square is '-'" do
+        basic_pawn_move = described_class.new("rnbqkbnr/ppp2ppp/8/3p4/3Pp3/2P5/PP2PPPP/RNBQKBNR w KQkq - 0 1")
+        basic_pawn_move.move_piece("a2", "a3")
+        expect(basic_pawn_move.fen[:ep_target_square]).to eq("-")
+      end
+    end
+
+    context "when a pawn moves two squares" do
+      it "updates the board correctly" do
+        basic_pawn_move = described_class.new("rnbqkbnr/ppp2ppp/8/3p4/3Pp3/2P5/PP2PPPP/RNBQKBNR w KQkq - 0 1")
+        basic_pawn_move.move_piece("f2", "f4")
+        expect(basic_pawn_move.fen[:piece_position]).to eq("rnbqkbnr/ppp2ppp/8/3p4/3PpP2/2P5/PP2P1PP/RNBQKBNR b KQkq f3 0 1")
+      end
+    end
+
+    context "when a pawn moves two squares" do
+      it "the ep_target_square shows the square that was jumped" do
+        basic_pawn_move = described_class.new("rnbqkbnr/ppp2ppp/8/3p4/3Pp3/2P5/PP2PPPP/RNBQKBNR w KQkq - 0 1")
+        basic_pawn_move.move_piece("f2", "f4")
+        expect(basic_pawn_move.fen[:ep_target_square]).to eq("f3")
+      end
+    end
+
+    context "when a pawn makes a normal capture" do
+      it "updates the board correctly" do
+        basic_pawn_capture = described_class.new("rnbqkbnr/1pp2ppp/p7/3p4/2PPp3/8/PP2PPPP/RNBQKBNR w KQkq - 0 2")
+        basic_pawn_capture.move_piece("c4", "d5")
+        expect(basic_pawn_capture.fen[:piece_position]).to eq("rnbqkbnr/1pp2ppp/p7/3P4/3Pp3/8/PP2PPPP/RNBQKBNR b KQkq - 0 2")
+      end
+    end
+
+    context "when a pawn makes a normal capture" do
+      it "the ep_target_square is '-'" do
+        basic_pawn_capture = described_class.new("rnbqkbnr/1pp2ppp/p7/3p4/2PPp3/8/PP2PPPP/RNBQKBNR w KQkq - 0 2")
+        basic_pawn_capture.move_piece("c4", "d5")
+        expect(basic_pawn_move.fen[:ep_target_square]).to eq("-")
+      end
+    end
+
+    context "when a white pawn makes a ep capture" do
+      it "updates the board correctly" do
+        white_ep_capture = described_class.new("rnbqkbnr/1p3ppp/p7/2pP4/3Pp3/8/PP2PPPP/RNBQKBNR w KQkq c6 0 3")
+        white_ep_capture.move_piece("d5", "c6")
+        expect(white_ep_capture.fen[:piece_position]).to eq("rnbqkbnr/1p3ppp/p1P5/8/3Pp3/8/PP2PPPP/RNBQKBNR b KQkq - 0 3")
+      end
+    end
+
+    context "when a white pawn makes a ep capture" do
+      it "the ep_target_square is '-'" do
+        white_ep_capture = described_class.new("rnbqkbnr/1p3ppp/p7/2pP4/3Pp3/8/PP2PPPP/RNBQKBNR w KQkq c6 0 3")
+        white_ep_capture.move_piece("d5", "c6")
+        expect(basic_pawn_move.fen[:ep_target_square]).to eq("-")
+      end
+    end
+
+    context "when a black pawn makes a ep capture" do
+      it "updates the board correctly" do
+        black_ep_capture = described_class.new("rnbqkbnr/1pp2ppp/p7/3p4/2PPpP2/8/PP2P1PP/RNBQKBNR b KQkq f3 0 2")
+        black_ep_capture.move_piece("e4", "f3")
+        expect(black_ep_capture.fen[:piece_position]).to eq("rnbqkbnr/1pp2ppp/p7/3p4/2PP4/5p2/PP2P1PP/RNBQKBNR w KQkq - 0 3")
+      end
+    end
+
+    context "when a black pawn makes a ep capture" do
+      it "the ep_target_square is '-'" do
+        black_ep_capture = described_class.new("rnbqkbnr/1pp2ppp/p7/3p4/2PPpP2/8/PP2P1PP/RNBQKBNR b KQkq f3 0 2")
+        black_ep_capture.move_piece("e4", "f3")
+        expect(basic_pawn_move.fen[:ep_target_square]).to eq("-")
+      end
+    end
   end
 end
