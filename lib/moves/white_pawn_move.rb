@@ -6,7 +6,7 @@ require_relative "../check"
 # Validates that a requested pawn move is allowed
 class WhitePawnMove < PieceMove
   def basic_rules?
-    basic_move? || capture_allowed?
+    basic_move? || capture_allowed? || en_passant?
   end
 
   # Only applies to straight moves, not captures
@@ -17,6 +17,12 @@ class WhitePawnMove < PieceMove
     target_row = paths.select { |row| row.length >= 1 }.flatten
     target_row = target_row.reverse if negative_movement?(target_row)
     pieces_present?(target_row)
+  end
+
+  def en_passant?
+    return false if fen[:ep_target_square] == "-"
+
+    offset_one_row? && offset_one_column? && finish_square.name == fen[:ep_target_square]
   end
 
   private

@@ -120,6 +120,16 @@ describe WhitePawnMove do
         expect(basic_board.basic_rules?).to eq(false)
       end
     end
+
+    # en_passant?
+    context "when en passant is allowed for white" do
+      it "returns true" do
+        ep_allowed = described_class.new("rnbqkbnr/pp2p1pp/2p5/3pPp2/3P4/8/PPP2PPP/RNBQKBNR w KQkq f6 0 4")
+        ep_allowed.update_start_square("e5")
+        ep_allowed.update_finish_square("f6")
+        expect(ep_allowed.basic_rules?).to eq(true)
+      end
+    end
   end
 
   describe "#clear_path?" do
@@ -164,7 +174,25 @@ describe WhitePawnMove do
         expect(pawn_obstructions.clear_path?).to eq(true)
       end
     end
+  end
 
+  describe "#en_passant?" do
+    context "when en passant is allowed for white" do
+      it "returns true" do
+        ep_allowed = described_class.new("rnbqkbnr/pp2p1pp/2p5/3pPp2/3P4/8/PPP2PPP/RNBQKBNR w KQkq f6 0 4")
+        ep_allowed.update_start_square("e5")
+        ep_allowed.update_finish_square("f6")
+        expect(ep_allowed.en_passant?).to eq(true)
+      end
+    end
 
+    context "when en passant is not allowed" do
+      it "returns false" do
+        ep_not_allowed = described_class.new("rnbqkbnr/pp2p1pp/2p5/3pPp2/3P4/P7/1PP2PPP/RNBQKBNR w KQkq - 0 5")
+        ep_not_allowed.update_start_square("e5")
+        ep_not_allowed.update_finish_square("f6")
+        expect(ep_not_allowed.en_passant?).to eq(false)
+      end
+    end
   end
 end
