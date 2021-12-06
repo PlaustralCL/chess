@@ -9,6 +9,7 @@ module BoardUpdateCastling
     else
       basic_move
     end
+    fen_no_ep
     update_king_castling
   end
 

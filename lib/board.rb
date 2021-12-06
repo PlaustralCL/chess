@@ -5,6 +5,7 @@ require_relative "board_helper"
 require_relative "check"
 require_relative "moves"
 require_relative "board_update_castling"
+require_relative "board_update_ep"
 
 # Holds the frameword of the board in a 64 element board. The board can be
 # sliced into an 8 x 8 matrix when needed. Each element of the array will be
@@ -13,6 +14,7 @@ class Board
   include BoardHelper
   include Moves
   include BoardUpdateCastling
+  include BoardUpdateEP
 
   attr_reader :gameboard, :winner, :fen, :start_square, :finish_square
 
@@ -47,6 +49,7 @@ class Board
   end
 
   # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/AbcSize
   def move_piece(start_square_name, finish_square_name)
     @start_square = find_square(start_square_name)
     @finish_square = find_square(finish_square_name)
@@ -55,14 +58,19 @@ class Board
       move_king
     when "r"
       update_rook_castling
+      fen[:ep_target_square] = "-"
       basic_move
+    when "p"
+      move_pawn
     else
+      fen_no_ep
       basic_move
     end
     update_rook_castling(finish_square) if %w[a1 h1 a8 h8].include?(finish_square.name)
     board_to_fen # updates fen[:piece_position]
   end
   # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Metrics/AbcSize
 
   def basic_move(start = start_square, finish = finish_square)
     finish.piece = start.piece
