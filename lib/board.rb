@@ -5,7 +5,11 @@ require_relative "board_helper"
 require_relative "check"
 require_relative "moves"
 require_relative "board_update_castling"
+<<<<<<< HEAD
 require_relative "board_update_pawn"
+=======
+require_relative "board_update_ep"
+>>>>>>> 9ccafe32b14e855f8a282e2b2a47f06573fa2f21
 
 # Holds the frameword of the board in a 64 element board. The board can be
 # sliced into an 8 x 8 matrix when needed. Each element of the array will be
@@ -14,7 +18,11 @@ class Board
   include BoardHelper
   include Moves
   include BoardUpdateCastling
+<<<<<<< HEAD
   include BoardUpdatePawn
+=======
+  include BoardUpdateEP
+>>>>>>> 9ccafe32b14e855f8a282e2b2a47f06573fa2f21
 
   attr_reader :gameboard, :winner, :fen, :start_square, :finish_square
 
