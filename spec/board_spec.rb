@@ -340,4 +340,38 @@ describe Board do
       end
     end
   end
+
+  describe "#pawn_promotion?" do
+    promotion_board_white = described_class.new("8/1P4k1/P7/1B6/8/8/2p3K1/8 w - - 0 1")
+    promotion_board_black = described_class.new("8/1P4k1/P7/1B6/8/8/2p3K1/8 b - - 0 1")
+
+    context "when a white pawn reaches the edge of the boad" do
+      it "returns true" do
+        promotion_board_white.move_piece("b7", "b8")
+        expect(promotion_board_white.pawn_promotion?).to eq(true)
+      end
+    end
+
+    context "when a black pawn reaches the edge of the boad" do
+      it "returns true" do
+        promotion_board_black.move_piece("c2", "c1")
+        expect(promotion_board_black.pawn_promotion?).to eq(true)
+      end
+    end
+
+    context "when a pawn does not move to the edge of the board" do
+      it "returns false" do
+        promotion_board_white.move_piece("a6", "a7")
+        expect(promotion_board_white.pawn_promotion?).to eq(false)
+      end
+    end
+
+    context "when the moving piece is not a pawn" do
+      it "returns false" do
+        promotion_board_white.move_piece("b5", "c4")
+        expect(promotion_board_white.pawn_promotion?).to eq(false)
+      end
+    end
+
+  end
 end

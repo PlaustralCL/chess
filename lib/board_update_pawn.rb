@@ -70,4 +70,9 @@ module BoardUpdatePawn
       end
     board_to_fen
   end
+
+  def pawn_promotion?
+    finish_square.piece.downcase == "p" &&
+      (finish_rank == "1" || finish_rank == "8")
+  end
 end
