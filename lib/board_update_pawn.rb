@@ -56,17 +56,18 @@ module BoardUpdatePawn
   end
 
   def promote_pawn(piece_symbol)
-    if fen[:side_to_move] == "b"
-      finish_square.piece = piece_symbol
-    else
-      piece_converter = {
-        "r" => "R",
-        "n" => "N",
-        "b" => "B",
-        "q" => "Q"
-      }
-      finish_square.piece = piece_converter[piece_symbol]
-    end
+    piece_converter = {
+      "1" => "q",
+      "2" => "n",
+      "3" => "r",
+      "4" => "b"
+    }
+    finish_square.piece =
+      if fen[:side_to_move] == "b"
+        piece_converter[piece_symbol]
+      else
+        piece_converter[piece_symbol].upcase
+      end
     board_to_fen
   end
 end

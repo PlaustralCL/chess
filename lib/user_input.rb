@@ -14,4 +14,12 @@ module UserInput
     # receive input so you have to direct it to look at STDIN instead.
     $stdin.gets.chomp.downcase
   end
+
+  def menu_input(phrase, options)
+    puts phrase
+    options.each_with_index do |choice, index|
+      puts "[#{index + 1}] - #{choice}"
+    end
+    gets.chomp
+  end
 end

@@ -323,7 +323,7 @@ describe Board do
     context "when a white pawn is promoted to a queen" do
       it "updates to show a 'Q'" do
         white_promotion = described_class.new("8/1P4k1/8/8/8/8/8/6K1 w - - 0 1")
-        piece_symbol = "q"
+        piece_symbol = "1"
         white_promotion.move_piece("b7", "b8")
         white_promotion.promote_pawn(piece_symbol)
         expect(white_promotion.fen[:piece_position]).to eq("1Q6/6k1/8/8/8/8/8/6K1")
@@ -333,7 +333,7 @@ describe Board do
     context "when a black pawn is promoted to a rook" do
       it "updates to show a 'r'" do
         black_promotion = described_class.new("8/6k1/8/8/8/8/1p4K1/8 b - - 0 1")
-        piece_symbol = "r"
+        piece_symbol = "3"
         black_promotion.move_piece("b2", "b1")
         black_promotion.promote_pawn(piece_symbol)
         expect(black_promotion.fen[:piece_position]).to eq("8/6k1/8/8/8/8/6K1/1r6")

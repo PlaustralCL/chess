@@ -83,6 +83,39 @@ describe Player do
         new_player.input_finish_square(finish_choices)
       end
     end
+  end
+
+  describe "#input_promotion_piece" do
+    error_message = "Input Error! That was not one of the allowed choices."
+
+    context "when input is valid" do
+
+      it "stops the loop and does not receive the error message" do
+        valid_input = "1"
+        allow(new_player).to receive(:menu_input).and_return(valid_input)
+        expect(new_player).not_to receive(:puts).with(error_message)
+        new_player.input_promotion_piece
+      end
+    end
+
+
+    context "when player enters incorrect choice followed by valid choice" do
+      it "completes the loop and displays error message once" do
+        valid_input = "2"
+        allow(new_player).to receive(:menu_input).and_return(nil, valid_input)
+        expect(new_player).to receive(:puts).with(error_message).once
+        new_player.input_promotion_piece
+      end
+    end
+
+    context "when player enters 2 incorrect choice followed by a valid choice" do
+      it "completes the loop and displays error message once" do
+        valid_input = "3"
+        allow(new_player).to receive(:menu_input).and_return(nil, nil, valid_input)
+        expect(new_player).to receive(:puts).with(error_message).twice
+        new_player.input_promotion_piece
+      end
+    end
 
   end
 

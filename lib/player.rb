@@ -30,4 +30,15 @@ class Player
       puts "Input Error! That piece cannot move there."
     end
   end
+
+  def input_promotion_piece
+    available_choices = %w[Queen Knight Rook Bishop]
+    loop do
+      input = menu_input("Pawn Promotion - Please choose the number corresponeding to your new piece:", available_choices)
+      input = verify_input(input, %w[1 2 3 4])
+      return input if input
+
+      puts "Input Error! That was not one of the allowed choices."
+    end
+  end
 end
