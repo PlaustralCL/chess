@@ -41,7 +41,7 @@ class Game
 
   def play_one_round
     start_square_name = collect_start_square
-    finish_square_name = collect_finish_square
+    finish_square_name = collect_finish_square(start_square_name)
     update_board(start_square_name, finish_square_name)
     show_board
   end
@@ -50,13 +50,13 @@ class Game
     current_player.input_start_square(board.start_square_choices)
   end
 
-  def collect_finish_square
+  def collect_finish_square(start_square_name)
     current_player.input_finish_square(board.finish_square_choices(start_square_name))
   end
 
   def update_board(start_square_name, finish_square_name)
     board.move_piece(start_square_name, finish_square_name) if board.valid_move?(start_square_name, finish_square_name)
-
+    board.promote_pawn(current_player.input_promotion_piece) if board.pawn_promotion?
   end
 
   def update_player
