@@ -230,6 +230,14 @@ describe Board do
     end
 
     # en passant/ pawn move testing
+    context "when a white pawn moves to the 8th rank" do
+      it "shows the pawn on the 8th rank" do
+        pawn_to_edge = described_class.new("8/1P4k1/8/8/8/8/8/6K1 w - - 0 1")
+        pawn_to_edge.move_piece("b7", "b8")
+        expect(pawn_to_edge.fen[:piece_position]).to eq("1P6/6k1/8/8/8/8/8/6K1")
+      end
+    end
+
     context "when a pawn moves one square" do
       it "updates the board correctly" do
         basic_pawn_move = described_class.new("rnbqkbnr/ppp2ppp/8/3p4/3Pp3/2P5/PP2PPPP/RNBQKBNR w KQkq - 0 1")
@@ -307,6 +315,28 @@ describe Board do
         black_ep_capture = described_class.new("rnbqkbnr/1pp2ppp/p7/3p4/2PPpP2/8/PP2P1PP/RNBQKBNR b KQkq f3 0 2")
         black_ep_capture.move_piece("e4", "f3")
         expect(black_ep_capture.fen[:ep_target_square]).to eq("-")
+      end
+    end
+  end
+
+  describe "#promote_pawn" do
+    context "when a white pawn is promoted to a queen" do
+      it "updates to show a 'Q'" do
+        white_promotion = described_class.new("8/1P4k1/8/8/8/8/8/6K1 w - - 0 1")
+        piece_symbol = "q"
+        white_promotion.move_piece("b7", "b8")
+        white_promotion.promote_pawn(piece_symbol)
+        expect(white_promotion.fen[:piece_position]).to eq("1Q6/6k1/8/8/8/8/8/6K1")
+      end
+    end
+
+    context "when a black pawn is promoted to a rook" do
+      it "updates to show a 'r'" do
+        black_promotion = described_class.new("8/6k1/8/8/8/8/1p4K1/8 b - - 0 1")
+        piece_symbol = "r"
+        black_promotion.move_piece("b2", "b1")
+        black_promotion.promote_pawn(piece_symbol)
+        expect(black_promotion.fen[:piece_position]).to eq("8/6k1/8/8/8/8/6K1/1r6")
       end
     end
   end
