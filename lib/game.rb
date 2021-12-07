@@ -40,10 +40,23 @@ class Game
   end
 
   def play_one_round
-    start_square_name = current_player.input_start_square(board.start_square_choices)
-    finish_square_name = current_player.input_finish_square(board.finish_square_choices(start_square_name))
-    board.move_piece(start_square_name, finish_square_name) if board.valid_move?(start_square_name, finish_square_name)
+    start_square_name = collect_start_square
+    finish_square_name = collect_finish_square
+    update_board(start_square_name, finish_square_name)
     show_board
+  end
+
+  def collect_start_square
+    current_player.input_start_square(board.start_square_choices)
+  end
+
+  def collect_finish_square
+    current_player.input_finish_square(board.finish_square_choices(start_square_name))
+  end
+
+  def update_board(start_square_name, finish_square_name)
+    board.move_piece(start_square_name, finish_square_name) if board.valid_move?(start_square_name, finish_square_name)
+
   end
 
   def update_player
