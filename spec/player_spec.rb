@@ -116,7 +116,23 @@ describe Player do
         new_player.input_promotion_piece
       end
     end
+  end
 
+  describe "#menu_input" do
+    before do
+      $stdin = StringIO.new("3")
+    end
+
+    after do
+      $stdin = STDIN
+    end
+
+    it "outputs a menu" do
+    phrase = "Pawn Promotion - Please choose the number corresponeding to your new piece:"
+    options = %w[Queen Knight Rook Bishop]
+    display = "Pawn Promotion - Please choose the number corresponeding to your new piece:\n[1] - Queen\n[2] - Knight\n[3] - Rook\n[4] - Bishop\n"
+    expect { new_player.menu_input(phrase, options) }.to output(display).to_stdout
+    end
   end
 
 end

@@ -17,8 +17,8 @@ module UserInput
 
   def menu_input(phrase, options)
     puts phrase
-    options.each_with_index do |choice, index|
-      puts "[#{index + 1}] - #{choice}"
+    options.each.with_index(1) do |choice, index|
+      puts "[#{index}] - #{choice}"
     end
     gets.chomp
   end
