@@ -119,7 +119,14 @@ describe Board do
         white_checkmate_board = described_class.new("7k/8/8/7r/6r1/8/8/7K")
         white_checkmate_board.update_current_player("white")
         expect(white_checkmate_board.game_over?).to eq(true)
+      end
+    end
 
+    context "when insufficent material" do
+      it "returns true" do
+        king_knight = described_class.new("6k1/8/8/4N3/8/8/8/6K1 b - - 0 1")
+        king_knight.update_current_player("black")
+        expect(king_knight.game_over?).to eq(true)
       end
     end
   end
@@ -372,6 +379,52 @@ describe Board do
         expect(promotion_board_white.pawn_promotion?).to eq(false)
       end
     end
+  end
 
+  describe "#insufficient_material" do
+    context "when only kings remain on the board" do
+      it "sets @winner to to 'insufficient'" do
+        only_kings = described_class.new("6k1/8/8/8/8/8/8/6K1 w - - 0 1")
+        only_kings.update_current_player("white")
+        only_kings.insufficent_material
+        expect(only_kings.winner).to eq("insufficient")
+      end
+    end
+
+    context "when king vs king and bishop" do
+      it "sets @winner to to 'insufficient'" do
+        king_bishop = described_class.new("6k1/8/5b2/8/8/8/8/6K1 w - - 0 1")
+        king_bishop.update_current_player("white")
+        king_bishop.insufficent_material
+        expect(king_bishop.winner).to eq("insufficient")
+      end
+    end
+
+    context "when king vs king and knight" do
+      it "sets @winner to 'insufficient'" do
+        king_knight = described_class.new("6k1/8/8/4N3/8/8/8/6K1 b - - 0 1")
+        king_knight.update_current_player("black")
+        king_knight.insufficent_material
+        expect(king_knight.winner).to eq("insufficient")
+      end
+    end
+
+    context "when king vs king and rook" do
+      it "leaves @winner as empty" do
+        king_rook = described_class.new("6k1/8/8/4R3/8/8/8/6K1 b - - 0 1")
+        king_rook.update_current_player("black")
+        king_rook.insufficent_material
+        expect(king_rook.winner).to eq("")
+      end
+    end
+
+    context "when king vs king, bishop, knight" do
+      it "leaves @winner as empty" do
+        bishop_and_knight = described_class.new("6k1/8/8/4N3/8/4B3/8/6K1 w - - 0 1")
+        bishop_and_knight.update_current_player("white")
+        bishop_and_knight.insufficent_material
+        expect(bishop_and_knight.winner).to eq("")
+      end
+    end
   end
 end

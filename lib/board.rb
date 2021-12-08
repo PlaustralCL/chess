@@ -10,6 +10,7 @@ require_relative "board_update_pawn"
 # Holds the frameword of the board in a 64 element board. The board can be
 # sliced into an 8 x 8 matrix when needed. Each element of the array will be
 # a Struct that maintains information about each square.
+# rubocop:todo Metrics ClassLength
 class Board
   include BoardHelper
   include Moves
@@ -89,7 +90,8 @@ class Board
   def game_over?
     checkmate
     stalemate
-    %w[white black stalemate].include?(winner)
+    insufficent_material
+    %w[white black stalemate insufficient].include?(winner)
   end
 
   def checkmate
@@ -99,6 +101,23 @@ class Board
 
   def stalemate
     @winner = "stalemate" if start_square_choices.empty? && !Check.new(current_player_color, board_to_fen).check?
+  end
+
+  def insufficent_material
+    remaining_pieces = gameboard.reject { |square| square.piece == "-" }.map { |square| square.piece.downcase }.sort
+    @winner = "insufficient" if only_kings?(remaining_pieces) || only_bishop_or_knight?(remaining_pieces)
+  end
+
+  def only_kings?(remaining_pieces)
+    remaining_pieces.count == 2
+  end
+
+  def only_bishop_or_knight?(remaining_pieces)
+    return false unless remaining_pieces.count == 3
+
+    kkb = %w[k k b].sort
+    kkn = %w[k k n].sort
+    kkb == remaining_pieces || kkn == remaining_pieces
   end
 
   private
