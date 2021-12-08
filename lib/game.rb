@@ -76,6 +76,8 @@ class Game
       puts "Checkmate! Black won."
     when "stalemate"
       puts "Stalemate! The game is a draw."
+    when "insufficient"
+      puts "Insufficient material. The game is a draw."
     end
   end
 

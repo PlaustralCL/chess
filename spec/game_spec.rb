@@ -29,5 +29,13 @@ describe Game do
         expect { new_game.final_message }.to output(stalemate_phrase).to_stdout
       end
     end
+
+    context "when the game ends by insufficient material" do
+      it "states draw by insufficient material" do
+        stalemate_phrase = "Insufficient material. The game is a draw.\n"
+        allow(board).to receive(:winner).and_return("insufficient")
+        expect { new_game.final_message }.to output(stalemate_phrase).to_stdout
+      end
+    end
   end
 end
