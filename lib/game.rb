@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "board"
+require_relative "random_player"
 require_relative "player"
 require_relative "display"
 require_relative "check"
@@ -13,6 +14,7 @@ class Game
   def initialize(
     board = Board.new,
     player1 = Player.new("Player 1", "white"),
+    # player2 = RandomPlayer.new
     player2 = Player.new("Player 2", "black")
   )
 
