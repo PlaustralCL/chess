@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "game"
+require_relative "setup"
 
-game = Game.new
-game.play_game
+game = Setup.new
+game.setup_game
