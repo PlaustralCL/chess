@@ -16,7 +16,6 @@ class Board
   include Moves
   include BoardUpdateCastling
   include BoardUpdatePawn
-  include BoardUpdatePawn
 
   attr_reader :gameboard, :winner, :fen, :start_square, :finish_square
 

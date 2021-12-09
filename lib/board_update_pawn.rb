@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Updates the board for en passant captures
+# Updates the board for en passant captures and pawn promotions
 module BoardUpdatePawn
   # rubocop:todo Metrics/AbcSize
   def move_pawn
