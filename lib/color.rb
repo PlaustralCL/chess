@@ -10,7 +10,7 @@ class String
   end
 
   def full_color(foreground, background)
-    "\e[38;5;#{foreground};48;5;#{background}m#{self}\e[0m"
+    "\e[1;38;5;#{foreground};48;5;#{background}m#{self}\e[0m"
   end
 
   def white_teal

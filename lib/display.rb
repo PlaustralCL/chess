@@ -19,12 +19,27 @@ class Display
   end
 
   def build_display
-    replace_dashes
+    # replace_dashes
+    convert_pieces
     center_pieces
     color_squares
     join_row
     add_rank_numbers
     add_file_letters
+  end
+
+  def convert_pieces
+    @display_board = gameboard
+    piece_converter = {
+      "p" => "*",
+      "r" => "#",
+      "n" => "$",
+      "b" => "&",
+      "q" => "@",
+      "k" => "+",
+      "-" => " "
+    }
+    display_board.map { |square| square.piece = piece_converter[square.piece.downcase] }
   end
 
   def replace_dashes
