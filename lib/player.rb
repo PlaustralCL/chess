@@ -13,6 +13,10 @@ class Player
     @color = color
   end
 
+  def update_color(color)
+    @color = color
+  end
+
   def input_start_square(available_choices)
     loop do
       input = verify_input(request_input("#{color.capitalize}'s turn! Please enter the coordinates of the piece you want to move"), available_choices)

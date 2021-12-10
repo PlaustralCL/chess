@@ -23,6 +23,7 @@ class Setup
     welcome
     load_game if select_type_of_game == "2"
     @player2 = Player.new("Player 2", "black") if select_opponent == "1"
+    select_color
     start_game
     reset_game if play_again?
     puts "Thanks for playing!"
@@ -46,7 +47,32 @@ class Setup
   def select_color
     available_choices = %w[White Black Random]
     prompt_message = "Which color do you want to play?"
-    receive_menu_input(available_choices, prompt_message)
+    case receive_menu_input(available_choices, prompt_message)
+    when "1"
+      player1_white
+    when "2"
+      player1_black
+    else
+      random_colors
+    end
+  end
+
+  def player1_white
+    player1.update_color("white")
+    player2.update_color("black")
+  end
+
+  def player1_black
+    player1.update_color("black")
+    player2.update_color("white")
+  end
+
+  def random_colors
+    colors = %w[white black]
+    player1_color = colors.sample
+    player2_color = (colors - [player1_color]).first
+    player1.update_color(player1_color)
+    player2.update_color(player2_color)
   end
 
   def select_opponent

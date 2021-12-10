@@ -11,6 +11,10 @@ class RandomPlayer
     @color = color
   end
 
+  def update_color(color)
+    @color = color
+  end
+
   def input_start_square(available_choices)
     available_choices.sample
   end
