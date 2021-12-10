@@ -9,6 +9,26 @@ class String
     "\e[#{special};#{color_code}m#{self}\e[0m"
   end
 
+  def full_color(foreground, background)
+    "\e[38;5;#{foreground};48;5;#{background}m#{self}\e[0m"
+  end
+
+  def white_teal
+    full_color(15, 6)
+  end
+
+  def black_teal
+    full_color(232, 6)
+  end
+
+  def white_brown
+    full_color(15, 178)
+  end
+
+  def black_brown
+    full_color(232, 178)
+  end
+
   def red
     colorize(31)
   end

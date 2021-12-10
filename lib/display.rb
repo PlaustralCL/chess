@@ -42,14 +42,22 @@ class Display
     @display_board = display_board.map do |square|
       row = square.coordinates.first
       column = square.coordinates.last
-      piece_name = square.piece
-      if (row.even? && column.even?) || (row.odd? && column.odd?)
-        piece_name.bold_cyan_backgrouond
-      else
-        piece_name.bold
+      if (row.even? && column.even?) || (row.odd? && column.odd?) # light squares
+        light_squares(square)
+      else # dark squares
+        dark_squares(square)
       end
     end
   end
+
+  def light_squares(square)
+    square.piece_color == "white" ? square.piece.white_brown : square.piece.black_brown
+  end
+
+  def dark_squares(square)
+    square.piece_color == "white" ? square.piece.white_teal : square.piece.black_teal
+  end
+
 
   def join_row
     @display_board = display_board.flatten.each_slice(8).to_a.map(&:join)
