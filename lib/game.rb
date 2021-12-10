@@ -14,7 +14,6 @@ class Game
   def initialize(
     board = Board.new,
     player1 = Player.new("Player 1", "white"),
-    # player2 = RandomPlayer.new
     player2 = Player.new("Player 2", "black")
   )
 
@@ -23,10 +22,9 @@ class Game
     @player2 = player2
   end
 
-  # rubocop:todo Metrics/AbcSize
   def play_game
     show_board
-    @current_player = player1
+    find_starting_player
     update_player
     until game_over?
       play_one_round
@@ -35,7 +33,11 @@ class Game
     end
     final_message
   end
-  # robocop: enable Metrics/AbcSize
+
+  def find_starting_player
+    starting_color = board.fen[:side_to_move] == "w" ? "white" : "black"
+    @current_player = player1.color == starting_color ? player1 : player2
+  end
 
   def game_over?
     board.game_over?

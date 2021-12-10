@@ -69,6 +69,7 @@ class Setup
 
   def load_game
     puts "Loading..."
+    @board = Board.new("r1bqk1nr/pppp1ppp/2n5/2b1p3/1PB1P3/5N2/P1PP1PPP/RNBQK2R b KQkq - 0 4")
   end
 
   def play_again?
