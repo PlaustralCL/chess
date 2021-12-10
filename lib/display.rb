@@ -30,13 +30,23 @@ class Display
 
   def convert_pieces
     @display_board = gameboard
+    # Alternative piece symbols:
+    # piece_converter = {
+    #   "p" => "*",
+    #   "r" => "#",
+    #   "n" => "$",
+    #   "b" => "&",
+    #   "q" => "@",
+    #   "k" => "+",
+    #   "-" => " "
+    # }
     piece_converter = {
-      "p" => "*",
-      "r" => "#",
-      "n" => "$",
-      "b" => "&",
-      "q" => "@",
-      "k" => "+",
+      "p" => "\u265f",
+      "r" => "\u265c",
+      "n" => "\u265e",
+      "b" => "\u265d",
+      "q" => "\u265b",
+      "k" => "\u265a",
       "-" => " "
     }
     display_board.map { |square| square.piece = piece_converter[square.piece.downcase] }
