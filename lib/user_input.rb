@@ -22,4 +22,14 @@ module UserInput
     end
     gets.chomp
   end
+
+  def receive_menu_input(available_choices, prompt_message)
+    loop do
+      input = menu_input(prompt_message, available_choices)
+      input = verify_input(input, (1..available_choices.length).to_a.map(&:to_s))
+      return input if input
+
+      puts "That was not one of the available choices. Please try again."
+    end
+  end
 end

@@ -43,28 +43,22 @@ class Setup
     puts
   end
 
+  def select_color
+    available_choices = %w[White Black Random]
+    prompt_message = "Which color do you want to play?"
+    receive_menu_input(available_choices, prompt_message)
+  end
+
   def select_opponent
     available_choices = %w[Human Computer]
     prompt_message = "Would you like to play another person or the computer"
-    loop do
-      input = menu_input(prompt_message, available_choices)
-      input = verify_input(input, (1..available_choices.length).to_a.map(&:to_s))
-      return input if input
-
-      puts "That was not one of the available choices. Please try again."
-    end
+    receive_menu_input(available_choices, prompt_message)
   end
 
   def select_type_of_game
     available_choices = %w[New Saved]
     prompt_message = "Would you like to play a new game or load a saved game?"
-    loop do
-      input = menu_input(prompt_message, available_choices)
-      input = verify_input(input, (1..available_choices.length).to_a.map(&:to_s))
-      return input if input
-
-      puts "That was not one of the available choices. Please try again."
-    end
+    receive_menu_input(available_choices, prompt_message)
   end
 
   def load_game
