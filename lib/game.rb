@@ -69,7 +69,18 @@ class Game
 
   def show_board
     system("clear")
+    puts "Chess".center(29)
+    if board.start_square
+      show_previous_move
+    else
+      puts "\n\n"
+    end
     puts Display.new(board.board_to_fen).build_display
+  end
+
+  def show_previous_move
+    puts "Previous move: #{board.start_square.name} - #{board.finish_square.name}"
+    puts
   end
 
   def final_message
