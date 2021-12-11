@@ -76,6 +76,7 @@ class PieceMove
     finish_square.piece_color = start_square.piece_color
     start_square.piece = "-"
     start_square.piece_color = nil
+    board_to_fen
   end
 
   def find_king(king_color)
