@@ -35,7 +35,7 @@ class Board
 
   def start_square_choices
     if check?
-      start_when_in_check
+      start_choices_when_in_check
     else
       possible_start_squares = ally_locations(current_player_color).reverse
       possible_start_squares.select do |square_name|
@@ -44,11 +44,12 @@ class Board
     end
   end
 
-  def start_when_in_check
+  def start_choices_when_in_check
     choices = []
-    choices << find_king.name if Check.new(current_player_color, board_to_fen).safe_square?
-    choices << Check.new(current_player_color, board_to_fen).capturing_pieces
-    choices << Check.new(current_player_color, board_to_fen).blocking_pieces
+    current_state = Check.new(current_player_color, board_to_fen)
+    choices << find_king.name if current_state.safe_square?
+    choices << current_state.capturing_pieces
+    choices << current_state.blocking_pieces
     choices.flatten.uniq
   end
 

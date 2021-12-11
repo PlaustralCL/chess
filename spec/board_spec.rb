@@ -15,6 +15,15 @@ describe Board do
       end
     end
 
+    context "when king in check and piece can block" do
+      it "only returns the name of the king's and blocking piece squares" do
+        only_king = described_class.new("4k2R/8/5r2/8/8/8/8/4K3 b - - 0 4")
+        only_king.update_current_player("black")
+        actual_piece_locations = only_king.start_square_choices
+        expect(actual_piece_locations).to contain_exactly("e8", "f6")
+      end
+    end
+
     context "when not all pieces have moves" do
       it "returns the names squares with pieces that can move" do
         pieces_board = described_class.new("6k1/8/8/2b5/8/5pp1/5P2/2R3K1")

@@ -55,7 +55,7 @@ class Check
   end
 
   def capturing_pieces
-    return false if checking_pieces.length > 1
+    return [] if checking_pieces.length > 1
 
     finish_name = checking_pieces.first.name
     pieces_list = find_allies.select do |square|
