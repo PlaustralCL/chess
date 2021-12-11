@@ -37,7 +37,7 @@ class Board
     if check?
       start_choices_when_in_check
     else
-      possible_start_squares = ally_locations(current_player_color).reverse
+      possible_start_squares = ally_locations(current_player_color)
       possible_start_squares.select do |square_name|
         finish_square_choices(square_name).length >= 1
       end
