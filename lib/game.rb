@@ -27,6 +27,7 @@ class Game
     find_starting_player
     update_player
     until game_over?
+      announce_check if board.check?
       play_one_round
       @current_player = current_player == player1 ? player2 : player1
       update_player
@@ -65,6 +66,10 @@ class Game
 
   def update_player
     board.update_current_player(current_player.color)
+  end
+
+  def announce_check
+    puts "Check!"
   end
 
   def show_board

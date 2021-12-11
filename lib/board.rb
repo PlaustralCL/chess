@@ -86,6 +86,11 @@ class Board
     move_object.valid_move?(start_square_name, finish_square_name)
   end
 
+  def check?
+    # opposite_color = { "white" => "black", "black" => "white" }
+    Check.new(current_player_color, board_to_fen).check?
+  end
+
   def game_over?
     checkmate
     stalemate
@@ -99,6 +104,8 @@ class Board
   end
 
   def stalemate
+    return if Check.new(current_player_color, board_to_fen).check?
+
     @winner = "stalemate" if start_square_choices.empty? && !Check.new(current_player_color, board_to_fen).check?
   end
 
