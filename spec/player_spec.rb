@@ -45,6 +45,15 @@ describe Player do
       end
     end
 
+    context "when player enters incorrect choice and then quits" do
+      it "completes the loop and displays error message once" do
+        valid_input = "q"
+        allow(new_player).to receive(:request_input).and_return(nil, valid_input)
+        expect(new_player).to receive(:puts).with(error_message).once
+        new_player.input_start_square(available_choices)
+      end
+    end
+
     context "when player enters 2 incorrect choice followed by a valid choice" do
       it "completes the loop and displays error message once" do
         valid_input = "g3"

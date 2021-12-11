@@ -19,6 +19,7 @@ class Player
 
   def input_start_square(available_choices)
     loop do
+      available_choices += %w[q s] unless available_choices.include?("q")
       input = verify_input(request_input("#{color.capitalize}'s turn! Please enter the coordinates of the piece you want to move"), available_choices)
       return input if input
 
@@ -28,6 +29,7 @@ class Player
 
   def input_finish_square(available_choices)
     loop do
+      available_choices += %w[q s] unless available_choices.include?("q")
       input = verify_input(request_input("Please enter the coordinates of legal move"), available_choices)
       return input if input
 
