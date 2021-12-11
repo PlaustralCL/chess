@@ -34,17 +34,16 @@ class Board
   end
 
   def start_square_choices
-    possible_start_squares = ally_locations(current_player_color)
+    possible_start_squares = ally_locations(current_player_color).reverse
     possible_start_squares.select do |square_name|
       finish_square_choices(square_name).length >= 1
     end
   end
 
   def finish_square_choices(start_square_name)
-    start_square = find_square(start_square_name)
-    choices = gameboard.select do |square|
-      move_object = piece_to_move_object(start_square.piece)
-      move_object.valid_move?(start_square_name, square.name)
+    possible_finish_squares = gameboard.reject { |square| square.piece_color == current_player_color }
+    choices = possible_finish_squares.select do |square|
+      valid_move?(start_square_name, square.name)
     end
     choices.map(&:name)
   end
