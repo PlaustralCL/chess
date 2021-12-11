@@ -6,6 +6,15 @@ describe Board do
   subject(:new_board) { described_class.new }
 
   describe "#start_square_choices" do
+    context "when the king is the only piece that can move" do
+      it "only returns the name of the king's square" do
+        only_king = described_class.new("r1bqk1nr/pppp1Bpp/2n5/2b1p3/1P2P3/5N2/P1PP1PPP/RNBQK2R b KQkq - 0 4")
+        only_king.update_current_player("black")
+        actual_piece_locations = only_king.start_square_choices
+        expect(actual_piece_locations).to contain_exactly("e8")
+      end
+    end
+
     context "when not all pieces have moves" do
       it "returns the names squares with pieces that can move" do
         pieces_board = described_class.new("6k1/8/8/2b5/8/5pp1/5P2/2R3K1")

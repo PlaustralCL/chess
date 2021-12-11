@@ -54,6 +54,17 @@ class Check
     end
   end
 
+  def capturing_pieces
+    return false if checking_pieces.length > 1
+
+    finish_name = checking_pieces.first.name
+    pieces_list = find_allies.select do |square|
+      move_object = piece_to_move_object(square.piece)
+      move_object.valid_move?(square.name, finish_name)
+    end
+    pieces_list.map(&:name)
+  end
+
   # Only one piece can be captured in a turn. If two or more pieces are giving check, the king
   # will need to move, which is looked at by another method.
   def block_the_check?
@@ -62,6 +73,15 @@ class Check
 
     checking_path = find_path
     find_allies.any? { |ally_square| ally_move_to_blocking_square?(checking_path, ally_square) }
+  end
+
+  def blocking_pieces
+    return [] if checking_pieces.length > 1
+    return [] if %w[n p].include?(checking_pieces.first.piece.downcase)
+
+    checking_path = find_path
+    pieces_list = find_allies.select { |ally_square| ally_move_to_blocking_square?(checking_path, ally_square) }
+    pieces_list.map(&:name)
   end
 
   def ally_move_to_blocking_square?(checking_path, ally_square)

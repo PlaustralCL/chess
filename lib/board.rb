@@ -34,10 +34,27 @@ class Board
   end
 
   def start_square_choices
-    possible_start_squares = ally_locations(current_player_color).reverse
-    possible_start_squares.select do |square_name|
-      finish_square_choices(square_name).length >= 1
+    if check?
+      start_when_in_check
+    else
+      possible_start_squares = ally_locations(current_player_color).reverse
+      possible_start_squares.select do |square_name|
+        finish_square_choices(square_name).length >= 1
+      end
     end
+  end
+
+  def start_when_in_check
+    choices = []
+    choices << find_king.name if Check.new(current_player_color, board_to_fen).safe_square?
+    choices << Check.new(current_player_color, board_to_fen).capturing_pieces
+    choices << Check.new(current_player_color, board_to_fen).blocking_pieces
+    choices.flatten.uniq
+  end
+
+  def find_king
+    king_square = gameboard.select { |square| square.piece.downcase == "k" && square.piece_color == current_player_color }
+    king_square.first
   end
 
   def finish_square_choices(start_square_name)
