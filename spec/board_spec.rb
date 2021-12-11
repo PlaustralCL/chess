@@ -43,7 +43,7 @@ describe Board do
   describe "#finish_square_choices" do
     context "when the piece has limited moves" do
       it "returns the names of squares the piece can move to" do
-        bishop_start_board = described_class.new("2r3k1/8/4b3/8/2B3p1/8/8/6K1")
+        bishop_start_board = described_class.new("2r3k1/8/4b3/8/2B3p1/8/8/6K1 b q - 0 1")
         actual_piece_locations = bishop_start_board.finish_square_choices("e6")
         expect(actual_piece_locations).to contain_exactly("c4", "d5", "f7")
       end
