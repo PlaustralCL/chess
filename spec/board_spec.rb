@@ -6,6 +6,14 @@ describe Board do
   subject(:new_board) { described_class.new }
 
   describe "#start_square_choices" do
+    context "when ep is possible" do
+      it "includes the ep capturing pawn as a start sqaure" do
+        ep_capture = described_class.new("5k2/8/3p4/2pP4/8/8/8/6K1 w - c6 0 2")
+        actual_piece_locations = ep_capture.start_square_choices
+        expect(actual_piece_locations).to contain_exactly("d5", "g1")
+      end
+    end
+
     context "when the king is the only piece that can move" do
       it "only returns the name of the king's square" do
         only_king = described_class.new("r1bqk1nr/pppp1Bpp/2n5/2b1p3/1P2P3/5N2/P1PP1PPP/RNBQK2R b KQkq - 0 4")
