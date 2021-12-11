@@ -41,19 +41,13 @@ class Check
     gameboard.any? { |square| KingMove.new(board_to_fen).valid_move?(start_name, square.name) }
   end
 
+  def capture_checking_piece?
+    capturing_pieces.length >= 1
+  end
+
   # Only one piece can be captured in a turn. If two or more pieces are giving check, the king
   # will need to move, which is looked at by another method. The king capturing
   # the checking piece is the king moving to a safe square.
-  def capture_checking_piece?
-    return false if checking_pieces.length > 1
-
-    finish_name = checking_pieces.first.name
-    find_allies.any? do |square|
-      move_object = piece_to_move_object(square.piece)
-      move_object.valid_move?(square.name, finish_name)
-    end
-  end
-
   def capturing_pieces
     return [] if checking_pieces.length > 1
 
@@ -65,16 +59,12 @@ class Check
     pieces_list.map(&:name)
   end
 
-  # Only one piece can be captured in a turn. If two or more pieces are giving check, the king
-  # will need to move, which is looked at by another method.
   def block_the_check?
-    return false if checking_pieces.length > 1
-    return false if %w[n p].include?(checking_pieces.first.piece.downcase)
-
-    checking_path = find_path
-    find_allies.any? { |ally_square| ally_move_to_blocking_square?(checking_path, ally_square) }
+    blocking_pieces.length >= 1
   end
 
+  # Only one piece can be captured in a turn. If two or more pieces are giving check, the king
+  # will need to move, which is looked at by another method.
   def blocking_pieces
     return [] if checking_pieces.length > 1
     return [] if %w[n p].include?(checking_pieces.first.piece.downcase)
