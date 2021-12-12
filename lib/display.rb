@@ -73,16 +73,13 @@ class Display
     end
   end
 
-  # rubocop: todo Metrics/MethodLength, Metrics/AbcSize
+  # rubocop: todo Metrics/MethodLength
   def color_squares
-    # binding.pry
     @display_board = display_board.map do |square|
       row = square.coordinates.first
       column = square.coordinates.last
-      if square.name == start_square_name
-        hightlight_start_square(square)
-      elsif target_squares.include?(square.name) && square.piece_color != "pink"
-        highlight_occupieced_square(square)
+      if special_square?(square)
+        special_colors(square)
       elsif (row.even? && column.even?) || (row.odd? && column.odd?) # light squares
         light_squares(square)
       else # dark squares
@@ -90,10 +87,19 @@ class Display
       end
     end
   end
-  # rubocop: enable Metrics/MethodLength, Metrics/AbcSize
+  # rubocop: enable Metrics/MethodLength
 
-  def hightlight_square?(square)
-    square.name == start_square_name || target_squares.include?(square.name)
+  def special_colors(square)
+    if square.name == start_square_name
+      hightlight_start_square(square)
+    else
+      highlight_occupieced_square(square)
+    end
+  end
+
+  def special_square?(square)
+    square.name == start_square_name ||
+      (target_squares.include?(square.name) && square.piece_color != "pink")
   end
 
   def highlight_occupieced_square(square)
