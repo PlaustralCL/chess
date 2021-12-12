@@ -23,16 +23,21 @@ class Game
   end
 
   def play_game
-    show_board
-    find_starting_player
-    update_player
+    preparation
     until game_over?
       announce_check if board.check?
-      play_one_round
+      break if play_one_round == "quit"
+
       @current_player = current_player == player1 ? player2 : player1
       update_player
     end
     final_message
+  end
+
+  def preparation
+    show_board
+    find_starting_player
+    update_player
   end
 
   def find_starting_player
@@ -46,17 +51,37 @@ class Game
 
   def play_one_round
     start_square_name = collect_start_square
+    return "quit" if start_square_name == "q"
+
     finish_square_name = collect_finish_square(start_square_name)
+    return "quit" if finish_square_name == "q"
+
     update_board(start_square_name, finish_square_name)
     show_board
   end
 
+  def save_game
+    puts "Saving game...Type any key to continue"
+    gets.chomp
+    show_board
+  end
+
   def collect_start_square
-    current_player.input_start_square(board.start_square_choices)
+    loop do
+      input = current_player.input_start_square(board.start_square_choices)
+      return input unless input == "s"
+
+      save_game
+    end
   end
 
   def collect_finish_square(start_square_name)
-    current_player.input_finish_square(board.finish_square_choices(start_square_name))
+    loop do
+      input = current_player.input_finish_square(board.finish_square_choices(start_square_name))
+      return input unless input == "s"
+
+      save_game
+    end
   end
 
   def update_board(start_square_name, finish_square_name)
@@ -88,6 +113,7 @@ class Game
     puts
   end
 
+  # rubocop: disable Metrics/MethodLength
   def final_message
     case board.winner
     when "white"
@@ -98,7 +124,10 @@ class Game
       puts "Stalemate! The game is a draw."
     when "insufficient"
       puts "Insufficient material. The game is a draw."
+    else
+      puts "#{current_player.color.capitalize} resigns. Game over."
     end
   end
+  # rubocop: enable Metrics/MethodLength
 
 end
