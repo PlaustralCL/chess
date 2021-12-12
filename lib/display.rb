@@ -5,12 +5,13 @@ require_relative "board_helper"
 require_relative "color"
 
 # Prepare the display
+# rubocop: todo Metrics/ClassLength
 class Display
   include BoardHelper
 
   attr_reader :gameboard, :display_board, :fen, :start_square_name, :target_squares
 
-  def initialize(position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR", speical_squares = ["e2", ["e3", "e4"]])
+  def initialize(position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR", speical_squares = [])
     @start_square_name = speical_squares.shift
     @target_squares = speical_squares.flatten
     @gameboard = Array.new(64) { Square.new }
@@ -80,6 +81,8 @@ class Display
       column = square.coordinates.last
       if square.name == start_square_name
         hightlight_start_square(square)
+      elsif target_squares.include?(square.name) && square.piece_color != "pink"
+        highlight_occupieced_square(square)
       elsif (row.even? && column.even?) || (row.odd? && column.odd?) # light squares
         light_squares(square)
       else # dark squares
@@ -91,6 +94,10 @@ class Display
 
   def hightlight_square?(square)
     square.name == start_square_name || target_squares.include?(square.name)
+  end
+
+  def highlight_occupieced_square(square)
+    square.piece_color == "white" ? square.piece.white_pink : square.piece.black_pink
   end
 
   def hightlight_start_square(square)

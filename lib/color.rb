@@ -21,6 +21,14 @@ class String
     full_color(199, 178)
   end
 
+  def white_pink
+    full_color(15, 199)
+  end
+
+  def black_pink
+    full_color(232, 199)
+  end
+
   def white_teal
     full_color(15, 6)
   end
@@ -43,14 +51,6 @@ class String
 
   def black_green
     full_color(232, 46)
-  end
-
-  def white_pink
-    full_color(15, 198)
-  end
-
-  def black_pink
-    full_color(232, 198)
   end
 
   def red
