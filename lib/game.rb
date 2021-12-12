@@ -1,15 +1,14 @@
 # frozen_string_literal: true
 
 require_relative "board"
-require_relative "random_player"
-require_relative "player"
-require_relative "display"
 require_relative "check"
+require_relative "display"
 require_relative "game_file"
+require_relative "player"
+require_relative "random_player"
 
 # Controls the flow of the game by coordinating among the various pieces
 # that make up the chess game.
-# rubocop: todo Metrics/ClassLength
 class Game
   attr_reader :board, :player1, :player2, :current_player
 
@@ -67,8 +66,7 @@ class Game
     game_file = GameFile.new(game_state)
     game_file.write
 
-    puts "The game is saved as #{game_file.filename}"
-    puts "Type any key to continue..."
+    puts "The game is saved as #{game_file.filename}\nType any key to continue..."
     gets.chomp
     show_board
   end
@@ -136,5 +134,4 @@ class Game
     end
   end
   # rubocop: enable Metrics/MethodLength
-
 end

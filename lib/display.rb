@@ -19,7 +19,6 @@ class Display
   end
 
   def build_display
-    # replace_dashes
     convert_pieces
     center_pieces
     color_squares
@@ -82,7 +81,6 @@ class Display
   def dark_squares(square)
     square.piece_color == "white" ? square.piece.white_teal : square.piece.black_teal
   end
-
 
   def join_row
     @display_board = display_board.flatten.each_slice(8).to_a.map(&:join)

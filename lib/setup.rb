@@ -88,7 +88,6 @@ class Setup
     receive_menu_input(available_choices, prompt_message)
   end
 
-  # rubocop: todo Metrics/MethodLength
   def load_game
     available_games = files("saved_games")
     if available_games.empty?
@@ -100,11 +99,7 @@ class Setup
       selection_index = receive_menu_input(available_games, prompt_message).to_i - 1
       load_file("saved_games/#{available_games[selection_index]}")
     end
-
-    # puts "Loading..."
-    # @board = Board.new("r1bqk1nr/pppp1ppp/2n5/2b1p3/1PB1P3/5N2/P1PP1PPP/RNBQK2R b KQkq - 0 4")
   end
-  # rubocop: enable Metrics/MethodLength
 
   def load_file(filename)
     game_state = load_yaml(filename)
