@@ -5,6 +5,7 @@ require_relative "../lib/game"
 describe Game do
   let(:board) { instance_double("board") }
   subject(:new_game) { described_class.new(board) }
+
   describe "#final_message" do
     context "when white wins" do
       it "states white won by checkmate" do

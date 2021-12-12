@@ -21,12 +21,11 @@ class Setup
 
   def setup_game
     welcome
-    load_game if select_type_of_game == "2"
-    @player2 = Player.new("Player 2", "black") if select_opponent == "1"
-    select_color
+    # load_game if select_type_of_game == "2"
+    # @player2 = Player.new("Player 2", "black") if select_opponent == "1"
+    # select_color
     start_game
     reset_game if play_again?
-    puts "Thanks for playing!"
   end
 
   def start_game
