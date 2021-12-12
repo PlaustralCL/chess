@@ -37,6 +37,14 @@ class String
     full_color(232, 46)
   end
 
+  def white_pink
+    full_color(15, 198)
+  end
+
+  def black_pink
+    full_color(232, 198)
+  end
+
   def red
     colorize(31)
   end
