@@ -72,11 +72,7 @@ class Board
         valid_move?(start_square_name, square.name)
       end
     end
-    begin
-      choices.map(&:name)
-    rescue NoMethodError
-      puts "Error. start_square_name is: #{start_square_name}, and choices are: #{choices}"
-    end
+    choices.map(&:name)
   end
 
   # rubocop:disable Metrics/MethodLength

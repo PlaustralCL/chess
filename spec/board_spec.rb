@@ -58,6 +58,13 @@ describe Board do
   end
 
   describe "#finish_square_choices" do
+    context "when the king is in check" do
+      it "finds the allowed moves to get out of check" do
+        king_check = described_class.new("r1bqkb2/p1ppp1P1/1pn4r/7Q/2PP4/8/PP3PPP/RNBQKBNR b KQq - 0 1")
+        actual_locations = king_check.finish_square_choices("h6")
+        expect(actual_locations).to contain_exactly("h5", "g6")
+      end
+    end
     context "when the piece has limited moves" do
       it "returns the names of squares the piece can move to" do
         bishop_start_board = described_class.new("2r3k1/8/4b3/8/2B3p1/8/8/6K1 b q - 0 1")
