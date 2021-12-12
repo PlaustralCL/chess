@@ -9,6 +9,7 @@ require_relative "random_player"
 
 # Controls the flow of the game by coordinating among the various pieces
 # that make up the chess game.
+# rubocop: disable Metrics/ClassLength
 class Game
   attr_reader :board, :player1, :player2, :current_player
 
@@ -81,6 +82,7 @@ class Game
   end
 
   def collect_finish_square(start_square_name)
+    show_board(start_square_name)
     loop do
       input = current_player.input_finish_square(board.finish_square_choices(start_square_name))
       return input unless input == "s"
@@ -102,7 +104,7 @@ class Game
     puts "Check!"
   end
 
-  def show_board
+  def show_board(start_square_name = "zz")
     system("clear")
     puts "Chess".center(29)
     if board.start_square
@@ -110,7 +112,7 @@ class Game
     else
       puts "\n\n"
     end
-    puts Display.new(board.board_to_fen).build_display
+    puts Display.new(board.board_to_fen, start_square_name).build_display
   end
 
   def show_previous_move

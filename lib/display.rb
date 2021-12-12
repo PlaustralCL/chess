@@ -7,9 +7,10 @@ require_relative "color"
 class Display
   include BoardHelper
 
-  attr_reader :gameboard, :display_board, :fen
+  attr_reader :gameboard, :display_board, :fen, :start_square_name
 
-  def initialize(position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
+  def initialize(position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR", start_square_name = "zz")
+    @start_square_name = start_square_name
     @gameboard = Array.new(64) { Square.new }
     setup_board(position)
   end
@@ -62,16 +63,25 @@ class Display
     end
   end
 
+  # rubocop: todo Metrics/MethodLength, Metrics/AbcSize
   def color_squares
     @display_board = display_board.map do |square|
       row = square.coordinates.first
       column = square.coordinates.last
-      if (row.even? && column.even?) || (row.odd? && column.odd?) # light squares
+      if square.name == start_square_name
+        hightlight_squares(square)
+      elsif (row.even? && column.even?) || (row.odd? && column.odd?) # light squares
         light_squares(square)
       else # dark squares
         dark_squares(square)
       end
     end
+  end
+  # rubocop: enable Metrics/MethodLength, Metrics/AbcSize
+
+  def hightlight_squares(square)
+    square.piece_color == "white" ? square.piece.white_green : square.piece.black_green
+
   end
 
   def light_squares(square)
