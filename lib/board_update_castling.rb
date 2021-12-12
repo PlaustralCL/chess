@@ -68,6 +68,8 @@ module BoardUpdateCastling
         (fen_castling - ["k"]).join
       when "a8"
         (fen_castling - ["q"]).join
+      else
+        fen[:castling_ability]
       end
     fen[:castling_ability] = "-" if fen[:castling_ability].empty?
   end
