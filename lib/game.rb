@@ -82,9 +82,10 @@ class Game
   end
 
   def collect_finish_square(start_square_name)
-    show_board(start_square_name)
+    finish_possiblities = board.finish_square_choices(start_square_name)
+    show_board([start_square_name] + finish_possiblities)
     loop do
-      input = current_player.input_finish_square(board.finish_square_choices(start_square_name))
+      input = current_player.input_finish_square(finish_possiblities)
       return input unless input == "s"
 
       save_game
@@ -104,7 +105,7 @@ class Game
     puts "Check!"
   end
 
-  def show_board(start_square_name = "zz")
+  def show_board(highlight_squares = [])
     system("clear")
     puts "Chess".center(29)
     if board.start_square
@@ -112,7 +113,7 @@ class Game
     else
       puts "\n\n"
     end
-    puts Display.new(board.board_to_fen, start_square_name).build_display
+    puts Display.new(board.board_to_fen, highlight_squares).build_display
   end
 
   def show_previous_move
