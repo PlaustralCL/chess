@@ -59,11 +59,24 @@ class Board
   end
 
   def finish_square_choices(start_square_name)
-    possible_finish_squares = gameboard.reject { |square| square.piece_color == current_player_color }
-    choices = possible_finish_squares.select do |square|
-      valid_move?(start_square_name, square.name)
+    if check?
+      choices = []
+      current_state = Check.new(current_player_color, board_to_fen)
+      choices << current_state.capture_checking_pieces(start_square_name)
+      choices << current_state.block_the_check(start_square_name).first
+      choices << current_state.find_safe_square.first if find_square(start_square_name).piece.downcase == "k"
+      choices.compact!
+    else
+      possible_finish_squares = gameboard.reject { |square| square.piece_color == current_player_color }
+      choices = possible_finish_squares.select do |square|
+        valid_move?(start_square_name, square.name)
+      end
     end
-    choices.map(&:name)
+    begin
+      choices.map(&:name)
+    rescue NoMethodError
+      puts "Error. start_square_name is: #{start_square_name}, and choices are: #{choices}"
+    end
   end
 
   # rubocop:disable Metrics/MethodLength

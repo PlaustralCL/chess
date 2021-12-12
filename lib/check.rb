@@ -4,6 +4,7 @@ require "pry"
 require_relative "moves"
 require_relative "board_helper"
 
+# rubocop: disable Metrics/ClassLength
 # Methods to determine if a king is in check
 class Check
   include Moves
@@ -41,6 +42,11 @@ class Check
     gameboard.any? { |square| KingMove.new(board_to_fen).valid_move?(start_name, square.name) }
   end
 
+  def find_safe_square
+    start_name = find_king.name
+    gameboard.select { |square| KingMove.new(board_to_fen).valid_move?(start_name, square.name) }
+  end
+
   def capture_checking_piece?
     capturing_pieces.length >= 1
   end
@@ -59,6 +65,19 @@ class Check
     pieces_list.map(&:name)
   end
 
+  def capture_checking_pieces(start_square_name)
+    start_square = find_square(start_square_name)
+    return [] if checking_pieces.length > 1
+
+    finish_name = checking_pieces.first.name
+    move_object = piece_to_move_object(start_square.piece)
+    checking_pieces.first if move_object.valid_move?(start_square.name, finish_name)
+  end
+
+  def find_square(square_name)
+    gameboard[gameboard.index { |square| square.name == square_name }]
+  end
+
   def block_the_check?
     blocking_pieces.length >= 1
   end
@@ -73,6 +92,20 @@ class Check
     pieces_list = find_allies.select { |ally_square| ally_move_to_blocking_square?(checking_path, ally_square) }
     pieces_list.map(&:name)
   end
+
+  # rubocop: todo Metrics/AbcSize
+  def block_the_check(start_square_name)
+    start_square = find_square(start_square_name)
+    return [] if checking_pieces.length > 1
+    return [] if %w[n p].include?(checking_pieces.first.piece.downcase)
+
+    checking_path = find_path
+    move_object = piece_to_move_object(start_square.piece)
+    checking_path.select do |square|
+      move_object.valid_move?(start_square_name, square.name)
+    end
+  end
+  # rubocop: enable Metrics/AbcSize
 
   def ally_move_to_blocking_square?(checking_path, ally_square)
     move_object = piece_to_move_object(ally_square.piece)
