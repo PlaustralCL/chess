@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "pry"
 require_relative "board_helper"
 require_relative "color"
 
@@ -7,10 +8,11 @@ require_relative "color"
 class Display
   include BoardHelper
 
-  attr_reader :gameboard, :display_board, :fen, :start_square_name
+  attr_reader :gameboard, :display_board, :fen, :start_square_name, :target_squares
 
-  def initialize(position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR", start_square_name = "zz")
-    @start_square_name = start_square_name
+  def initialize(position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR", speical_squares = ["e2", ["e3", "e4"]])
+    @start_square_name = speical_squares.shift
+    @target_squares = speical_squares.flatten
     @gameboard = Array.new(64) { Square.new }
     setup_board(position)
   end
@@ -49,7 +51,14 @@ class Display
       "k" => "\u265a",
       "-" => " "
     }
-    display_board.map { |square| square.piece = piece_converter[square.piece.downcase] }
+    display_board.map do |square|
+      if target_squares.include?(square.name) && square.piece == "-"
+        square.piece = "\u23fa"
+        square.piece_color = "pink"
+      else
+        square.piece = piece_converter[square.piece.downcase]
+      end
+    end
   end
 
   def replace_dashes
@@ -65,11 +74,12 @@ class Display
 
   # rubocop: todo Metrics/MethodLength, Metrics/AbcSize
   def color_squares
+    # binding.pry
     @display_board = display_board.map do |square|
       row = square.coordinates.first
       column = square.coordinates.last
       if square.name == start_square_name
-        hightlight_squares(square)
+        hightlight_start_square(square)
       elsif (row.even? && column.even?) || (row.odd? && column.odd?) # light squares
         light_squares(square)
       else # dark squares
@@ -79,17 +89,34 @@ class Display
   end
   # rubocop: enable Metrics/MethodLength, Metrics/AbcSize
 
-  def hightlight_squares(square)
-    square.piece_color == "white" ? square.piece.white_green : square.piece.black_green
+  def hightlight_square?(square)
+    square.name == start_square_name || target_squares.include?(square.name)
+  end
 
+  def hightlight_start_square(square)
+    square.piece_color == "white" ? square.piece.white_green : square.piece.black_green
   end
 
   def light_squares(square)
-    square.piece_color == "white" ? square.piece.white_brown : square.piece.black_brown
+    case square.piece_color
+    when "white"
+      square.piece.white_brown
+    when "pink"
+      square.piece.pink_brown
+    else
+      square.piece.black_brown
+    end
   end
 
   def dark_squares(square)
-    square.piece_color == "white" ? square.piece.white_teal : square.piece.black_teal
+    case square.piece_color
+    when "white"
+      square.piece.white_teal
+    when "pink"
+      square.piece.pink_teal
+    else
+      square.piece.black_teal
+    end
   end
 
   def join_row

@@ -13,6 +13,14 @@ class String
     "\e[1;38;5;#{foreground};48;5;#{background}m#{self}\e[0m"
   end
 
+  def pink_teal
+    full_color(199, 6)
+  end
+
+  def pink_brown
+    full_color(199, 178)
+  end
+
   def white_teal
     full_color(15, 6)
   end
