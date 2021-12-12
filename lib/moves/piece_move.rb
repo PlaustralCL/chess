@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "pry"
 require_relative "../board_helper"
 
 # Parent class for checking the validity of piece moves

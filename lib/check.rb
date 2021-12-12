@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "pry"
 require_relative "moves"
 require_relative "board_helper"
 

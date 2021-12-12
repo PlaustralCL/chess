@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "pry"
 require_relative "piece_move"
 require_relative "../check"
 require_relative "path"
