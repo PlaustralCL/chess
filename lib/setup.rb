@@ -5,11 +5,13 @@ require_relative "game"
 require_relative "player"
 require_relative "random_player"
 require_relative "user_input"
+require_relative "find_files"
 
 # Does the initial set up for the game: choosing an opponent, color, and new
 # or saved game
 class Setup
   include UserInput
+  include FindFiles
 
   attr_reader :board, :player1, :player2
 
@@ -21,9 +23,9 @@ class Setup
 
   def setup_game
     welcome
-    # load_game if select_type_of_game == "2"
-    # @player2 = Player.new("Player 2", "black") if select_opponent == "1"
-    # select_color
+    load_game if select_type_of_game == "2"
+    @player2 = Player.new("Player 2", "black") if select_opponent == "1"
+    select_color
     start_game
     reset_game if play_again?
   end
@@ -86,9 +88,27 @@ class Setup
     receive_menu_input(available_choices, prompt_message)
   end
 
+  # rubocop: todo Metrics/MethodLength
   def load_game
-    puts "Loading..."
-    @board = Board.new("r1bqk1nr/pppp1ppp/2n5/2b1p3/1PB1P3/5N2/P1PP1PPP/RNBQK2R b KQkq - 0 4")
+    available_games = files("saved_games")
+    if available_games.empty?
+      puts "No saved games, starting a new game."
+      puts "Press any key to continue..."
+      gets
+    else
+      prompt_message = "Please select the game you would like to load"
+      selection_index = receive_menu_input(available_games, prompt_message).to_i - 1
+      load_file("saved_games/#{available_games[selection_index]}")
+    end
+
+    # puts "Loading..."
+    # @board = Board.new("r1bqk1nr/pppp1ppp/2n5/2b1p3/1PB1P3/5N2/P1PP1PPP/RNBQK2R b KQkq - 0 4")
+  end
+  # rubocop: enable Metrics/MethodLength
+
+  def load_file(filename)
+    game_state = load_yaml(filename)
+    @board = Board.new(game_state)
   end
 
   def play_again?

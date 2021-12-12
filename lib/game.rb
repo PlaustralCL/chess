@@ -5,9 +5,11 @@ require_relative "random_player"
 require_relative "player"
 require_relative "display"
 require_relative "check"
+require_relative "game_file"
 
 # Controls the flow of the game by coordinating among the various pieces
 # that make up the chess game.
+# rubocop: todo Metrics/ClassLength
 class Game
   attr_reader :board, :player1, :player2, :current_player
 
@@ -61,7 +63,12 @@ class Game
   end
 
   def save_game
-    puts "Saving game...Type any key to continue"
+    game_state = board.board_to_fen
+    game_file = GameFile.new(game_state)
+    game_file.write
+
+    puts "The game is saved as #{game_file.filename}"
+    puts "Type any key to continue..."
     gets.chomp
     show_board
   end
