@@ -53,7 +53,7 @@ class Display
     }
     display_board.map do |square|
       if target_squares.include?(square.name) && square.piece == "-"
-        square.piece = "\u23fa"
+        square.piece = "\u25cf"
         square.piece_color = "pink"
       else
         square.piece = piece_converter[square.piece.downcase]
