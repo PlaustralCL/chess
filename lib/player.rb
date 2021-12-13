@@ -31,7 +31,7 @@ class Player
   def input_finish_square(available_choices)
     loop do
       available_choices += %w[q s] unless available_choices.include?("q")
-      prompt_message = "Please enter the coordinates of legal move, 's' to save the game, or 'q' to quit"
+      prompt_message = "Please enter the coordinates of the destination square,\n's' to save the game, or 'q' to quit"
       input = verify_input(request_input(prompt_message), available_choices)
       return input if input
 

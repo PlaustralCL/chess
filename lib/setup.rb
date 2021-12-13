@@ -26,8 +26,17 @@ class Setup
     load_game if select_type_of_game == "2"
     @player2 = Player.new("Player 2", "black") if select_opponent == "1"
     select_color
+    instructions
     start_game
     reset_game if play_again?
+  end
+
+  def instructions
+    puts "Please note that entering your move is a two step proccess:"
+    puts "First, enter the coordinates of the piece you want to move and press enter."
+    puts "Second, enter the coordinates of the destination square."
+    puts "Press any key to continue to the game"
+    gets
   end
 
   def start_game
