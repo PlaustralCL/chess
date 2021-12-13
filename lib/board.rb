@@ -87,7 +87,7 @@ class Board
       move_king
     when "r"
       update_rook_castling
-      fen[:ep_target_square] = "-"
+      fen_no_ep
       basic_move
     when "p"
       move_pawn
