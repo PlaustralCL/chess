@@ -49,7 +49,7 @@ module BoardHelper
     fen_defaults
   end
 
-  # rubocop:todo Metrics/AbcSize
+  # rubocop:disable Metrics/AbcSize
   def fen_defaults
     @fen[:side_to_move] = "w" if fen[:side_to_move].nil?
     @fen[:castling_ability] = "-" if fen[:castling_ability].nil?

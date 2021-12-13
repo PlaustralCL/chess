@@ -2,14 +2,13 @@
 
 # Updates the board for en passant captures and pawn promotions
 module BoardUpdatePawn
-  # rubocop:todo Metrics/AbcSize
   def move_pawn
     # ep capture
     if finish_square.name == fen[:ep_target_square]
       fen_no_ep
       ep_capture
     # pawn jump enables ep for next move
-    elsif (start_square.coordinates.first - finish_square.coordinates.first).abs == 2
+    elsif pawn_jump?
       add_ep_to_fen
       basic_move
     # regular move - one square ahead or basic capture
@@ -18,7 +17,10 @@ module BoardUpdatePawn
       basic_move
     end
   end
-  # rubocop:enable Metrics/AbcSize
+
+  def pawn_jump?
+    (start_square.coordinates.first - finish_square.coordinates.first).abs == 2
+  end
 
   def add_ep_to_fen
     ep_target_name =

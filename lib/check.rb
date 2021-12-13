@@ -85,18 +85,17 @@ class Check
   # will need to move, which is looked at by another method.
   def blocking_pieces
     return [] if checking_pieces.length > 1
-    return [] if %w[n p].include?(checking_pieces.first.piece.downcase)
+    return [] if knight_pawn_check?
 
     checking_path = find_path
     pieces_list = find_allies.select { |ally_square| ally_move_to_blocking_square?(checking_path, ally_square) }
     pieces_list.map(&:name)
   end
 
-  # rubocop: todo Metrics/AbcSize
   def block_the_check(start_square_name)
     start_square = find_square(start_square_name)
     return [] if checking_pieces.length > 1
-    return [] if %w[n p].include?(checking_pieces.first.piece.downcase)
+    return [] if knight_pawn_check?
 
     checking_path = find_path
     move_object = piece_to_move_object(start_square.piece)
@@ -104,7 +103,10 @@ class Check
       move_object.valid_move?(start_square_name, square.name)
     end
   end
-  # rubocop: enable Metrics/AbcSize
+
+  def knight_pawn_check?
+    %w[n p].include?(checking_pieces.first.piece.downcase)
+  end
 
   def ally_move_to_blocking_square?(checking_path, ally_square)
     move_object = piece_to_move_object(ally_square.piece)
