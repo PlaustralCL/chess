@@ -20,11 +20,11 @@ class Player
   def input_start_square(available_choices)
     loop do
       available_choices += %w[q s] unless available_choices.include?("q")
-      prompt_message = "#{color.capitalize}'s turn! Please enter the coordinates of the piece you want to move, 's' to save the game, or 'q' to quit"
+      prompt_message = "#{color.capitalize}'s turn! Please enter the coordinates of the piece you want to move,\n's' to save the game, or 'q' to quit"
       input = verify_input(request_input(prompt_message), available_choices)
       return input if input
 
-      puts "Input Error! That square does not have a piece you can move."
+      puts "That square does not have a piece you can move. Please try again."
     end
   end
 
@@ -35,7 +35,7 @@ class Player
       input = verify_input(request_input(prompt_message), available_choices)
       return input if input
 
-      puts "Input Error! That piece cannot move there."
+      puts "That piece cannot move there. Please try again."
     end
   end
 
@@ -46,7 +46,7 @@ class Player
       input = verify_input(input, %w[1 2 3 4])
       return input if input
 
-      puts "Input Error! That was not one of the allowed choices."
+      puts "That was not one of the allowed choices. Please try again."
     end
   end
 end
