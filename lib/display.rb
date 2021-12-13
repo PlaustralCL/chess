@@ -32,16 +32,6 @@ class Display
 
   def convert_pieces
     @display_board = gameboard
-    # Alternative piece symbols:
-    # piece_converter = {
-    #   "p" => "*",
-    #   "r" => "#",
-    #   "n" => "$",
-    #   "b" => "&",
-    #   "q" => "@",
-    #   "k" => "+",
-    #   "-" => " "
-    # }
     piece_converter = {
       "p" => "\u265f",
       "r" => "\u265c",
@@ -72,21 +62,23 @@ class Display
     end
   end
 
-  # rubocop: todo Metrics/MethodLength
   def color_squares
     @display_board = display_board.map do |square|
-      row = square.coordinates.first
-      column = square.coordinates.last
       if special_square?(square)
         special_colors(square)
-      elsif (row.even? && column.even?) || (row.odd? && column.odd?) # light squares
+      elsif light_square?(square)
         light_squares(square)
-      else # dark squares
+      else
         dark_squares(square)
       end
     end
   end
-  # rubocop: enable Metrics/MethodLength
+
+  def light_square?(square)
+    row = square.coordinates.first
+    column = square.coordinates.last
+    (row.even? && column.even?) || (row.odd? && column.odd?) # light squares
+  end
 
   def special_colors(square)
     if square.name == start_square_name
