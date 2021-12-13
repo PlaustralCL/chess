@@ -58,13 +58,9 @@ class Board
   end
 
   def finish_square_choices(start_square_name)
+    choices = []
     if check?
-      choices = []
-      current_state = Check.new(current_player_color, board_to_fen)
-      choices << current_state.capture_checking_pieces(start_square_name)
-      choices << current_state.block_the_check(start_square_name).first
-      choices << current_state.find_safe_square.first if find_square(start_square_name).piece.downcase == "k"
-      choices.compact!
+      choices = finish_choices_when_in_check(start_square_name)
     else
       possible_finish_squares = gameboard.reject { |square| square.piece_color == current_player_color }
       choices = possible_finish_squares.select do |square|
@@ -74,8 +70,15 @@ class Board
     choices.map(&:name)
   end
 
-  # rubocop:disable Metrics/MethodLength
-  # rubocop:disable Metrics/AbcSize
+  def finish_choices_when_in_check(start_square_name)
+    choices = []
+    current_state = Check.new(current_player_color, board_to_fen)
+    choices << current_state.capture_checking_pieces(start_square_name)
+    choices << current_state.block_the_check(start_square_name).first
+    choices << current_state.find_safe_square.first if find_square(start_square_name).piece.downcase == "k"
+    choices.compact
+  end
+
   def move_piece(start_square_name, finish_square_name)
     @start_square = find_square(start_square_name)
     @finish_square = find_square(finish_square_name)
@@ -95,8 +98,6 @@ class Board
     update_rook_castling(finish_square) if %w[a1 h1 a8 h8].include?(finish_square.name)
     board_to_fen # updates fen[:piece_position]
   end
-  # rubocop:enable Metrics/MethodLength
-  # rubocop:enable Metrics/AbcSize
 
   def basic_move(start = start_square, finish = finish_square)
     finish.piece = start.piece
@@ -112,7 +113,6 @@ class Board
   end
 
   def check?
-    # opposite_color = { "white" => "black", "black" => "white" }
     Check.new(current_player_color, board_to_fen).check?
   end
 
