@@ -8,7 +8,6 @@ describe Player do
   let(:finish_choices) { %w[a1 b1 c1 d1 e1] }
 
   describe "#verify_input" do
-
     context "when a valid choice is entered" do
       it "returns the choice" do
         player_input = "g1"
@@ -25,7 +24,7 @@ describe Player do
   end
 
   describe "#input_start_square" do
-    error_message = "Input Error! That square does not have a piece you can move."
+    error_message = "That square does not have a piece you can move. Please try again."
 
     context "when input is valid" do
       it "stops the loop and does not receive the error message" do
@@ -65,7 +64,8 @@ describe Player do
   end
 
   describe "#input_finish_square" do
-    error_message = "Input Error! That piece cannot move there."
+    error_message = "That piece cannot move there. Please try again."
+
     context "when input is valid" do
       it "stops the loop and does not receive the error message" do
         valid_input = "e1"
@@ -95,10 +95,9 @@ describe Player do
   end
 
   describe "#input_promotion_piece" do
-    error_message = "Input Error! That was not one of the allowed choices."
+    error_message = "That was not one of the allowed choices. Please try again."
 
     context "when input is valid" do
-
       it "stops the loop and does not receive the error message" do
         valid_input = "1"
         allow(new_player).to receive(:menu_input).and_return(valid_input)
@@ -106,7 +105,6 @@ describe Player do
         new_player.input_promotion_piece
       end
     end
-
 
     context "when player enters incorrect choice followed by valid choice" do
       it "completes the loop and displays error message once" do
