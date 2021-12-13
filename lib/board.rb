@@ -176,3 +176,4 @@ class Board
     gameboard[gameboard.index { |square| square.name == square_name }]
   end
 end
+# rubocop:enable Metrics ClassLength

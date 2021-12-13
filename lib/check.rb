@@ -161,3 +161,4 @@ class Check
     find_king
   end
 end
+# rubocop: enable Metrics/ClassLength

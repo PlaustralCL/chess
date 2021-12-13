@@ -135,6 +135,7 @@ class Display
     "#{display_board}    a  b  c  d  e  f  g  h"
   end
 end
+# rubocop: enable Metrics/ClassLength
 
 if $PROGRAM_NAME == __FILE__
   board = Display.new
